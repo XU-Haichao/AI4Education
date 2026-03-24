@@ -1,0 +1,21 @@
+{
+  "updatedAt": "2026-02-07T08:17:20.369Z",
+  "pages": {
+    "quantum-field-theory": {
+      "content": "# 量子场论\n\n> **核心直觉：** 粒子不是“附加的小球”，而是场 $\\phi(x,t)$ 的一种**局域激发**。这个页面里每个发光点，都对应场上的一个局域波包。\n\n## 0. 如何读图（30 秒上手）\n\n- 上半部分曲线：场的形状 $\\phi(x,t)$（真空也会有轻微起伏）\n- 发光点：一个“会跑的局域波包”——把它当作**粒子（场的激发）**（蓝：$e^-$，红：$e^+$）\n- 下半部分谱条：按动量尺度分组的占据数 $n_k$（条越高，说明该 $k$ 上的粒子对越多）\n\n## 1. 从“场”到“粒子”：模式=谐振子\n\n把场分解成动量模式：\n\n$$\n\\phi(x,t)=\\sum_k \\frac{1}{\\sqrt{2\\omega_k}}\\Big(a_k\\,e^{i(kx-\\omega_k t)}+a_k^\\dagger\\,e^{-i(kx-\\omega_k t)}\\Big).\n$$\n\n每个 $k$ 模式都像一个量子谐振子，能级由占据数 $n_k$ 决定：\n\n$$\nH_k = \\omega_k\\,(n_k+\\tfrac12).\n$$\n\n## 2. 产生 / 湮灭：让占据数离散地改变\n\n- $a_k^\\dagger|n_k\\rangle = \\sqrt{n_k+1}\\,|n_k+1\\rangle$（创建一个激发）\n- $a_k|n_k\\rangle = \\sqrt{n_k}\\,|n_k-1\\rangle$（移除一个激发）\n\n在这个玩具演示里，我们把“激发”画成一个会移动的局域波包，让你直观看到：**粒子就是场的激发**。\n\n## 3. 建议做的 3 个小实验\n\n1) 选低 $k$，点击一次 $a^\\dagger$：观察一对 $e^- / e^+$ 如何从场中出现  \n2) 选高 $k$ 再来一次：波包内部“波长更短”、运动更快  \n3) 观察当 $e^-$ 与 $e^+$ 靠近时的自动湮灭：释放两束 $\\gamma$ 辐射包\n",
+      "media": {
+        "links": [],
+        "images": [
+          {
+            "name": "浙江大学物理学院袁野",
+            "url": "/admin_uploads/files/quantum-field-theory/images/1770452238404-gtp7ni-yuanye.jpg",
+            "thumbnail": "/admin_uploads/files/quantum-field-theory/images/1770452238404-gtp7ni-yuanye.jpg",
+            "id": 1770452238468
+          }
+        ],
+        "videos": [],
+        "documents": []
+      }
+    }
+  }
+}

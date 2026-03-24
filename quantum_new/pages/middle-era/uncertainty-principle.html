@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="不确定性原理 - 量子力学的根本限制">
+    <title>不确定性原理 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/animations.css">
+    <link rel="stylesheet" href="../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">🎲</span>
+                <span class="nav-page-name">不确定性原理</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+            <div class="demo-panel">
+                <!-- 统一演示区 -->
+                <div class="simulation-container">
+                    <canvas id="experiment-canvas" class="experiment-canvas"></canvas>
+
+                    <!-- 叠加层：实时数据 -->
+                    <div class="overlay-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">狭缝宽度 (Δx)</span>
+                            <span class="stat-value" id="width-display">1.0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">动量分散 (Δp)</span>
+                            <span class="stat-value" id="spread-display">---</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">实验参数</h3>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>狭缝宽度 (位置不确定度)</span>
+                            <span class="control-value" id="slider-val">中等</span>
+                        </div>
+                        <input type="range" id="slit-slider" min="20" max="150" value="50" step="1">
+                        <div class="slider-labels">
+                            <span>极窄 (高不确定性)</span>
+                            <span>极宽 (低不确定性)</span>
+                        </div>
+                    </div>
+
+                    <div class="control-buttons">
+                        <button class="control-btn warning" id="clear-btn">清除屏幕</button>
+                        <button class="control-btn primary" id="fire-btn">发射粒子流</button>
+                    </div>
+
+                    <div class="explanation-box">
+                        <p>💡 <strong>观察重点：</strong> 当狭缝变窄（位置确定），粒子打在屏幕上的散布范围（动量不确定）会发生什么变化？</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 学习内容</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content"></div>
+
+                <!-- 物理学家介绍 -->
+                <div class="physicist-card">
+                    <img src="../../assets/images/heisenberg.png" alt="海森堡" class="physicist-image">
+                    <div class="physicist-info">
+                        <h4>维尔纳·海森堡</h4>
+                        <p>Werner Heisenberg (1901-1976)</p>
+                        <p class="physicist-desc">德国物理学家，1927年提出不确定性原理，1932年获诺贝尔物理学奖。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="schrodinger-equation.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">薛定谔方程</div>
+                </div>
+            </a>
+            <a href="solvay-conference.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一节</div>
+                    <div class="page-nav-title">索尔维会议</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/quantum-bg.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/nav-menu.js"></script>
+    <script src="../../js/simulations/middle-era/uncertainty-principle.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('uncertainty-principle', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        .simulation-container {
+            position: relative;
+            background: #000;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .experiment-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .overlay-stats {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .stat-value {
+            color: #22d3ee;
+            font-weight: bold;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 5px;
+        }
+
+        .explanation-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 8px;
+            font-size: 0.95em;
+            color: #d1fae5;
+        }
+
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        @media (max-width: 768px) {
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

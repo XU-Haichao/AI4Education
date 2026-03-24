@@ -1,0 +1,872 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="1927年索尔维会议 - 决定论与概率论的交锋">
+    <title>索尔维会议 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/animations.css">
+    <link rel="stylesheet" href="../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">📸</span>
+                <span class="nav-page-name">1927索尔维会议</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container solvay-layout">
+            <section class="solvay-hero scroll-animate">
+                <div class="hero-media">
+                    <img src="../../assets/images/solvay.png" alt="1927年第五届索尔维会议：与会科学家合影" class="hero-image" width="2816" height="1536">
+                    <div class="hero-overlay">
+                        <div class="hero-kicker">1927 · BRUSSELS · SOLVAY V</div>
+                        <h1 class="hero-title">索尔维会议：量子世界的“法庭”</h1>
+                        <p class="hero-subtitle">同一套量子公式，能否对应同一种现实？决定论与概率论在这里正面交锋。</p>
+                    </div>
+                </div>
+
+                <div class="hero-cards">
+                    <div class="hero-card">
+                        <div class="hero-card-label">主题</div>
+                        <div class="hero-card-value">电子与光子</div>
+                        <div class="hero-card-note">Electrons & Photons</div>
+                    </div>
+                    <div class="hero-card">
+                        <div class="hero-card-label">核心分歧</div>
+                        <div class="hero-card-value">随机是本质吗？</div>
+                        <div class="hero-card-note">还是来自隐变量与未完成的描述？</div>
+                    </div>
+                    <div class="hero-card">
+                        <div class="hero-card-label">历史回响</div>
+                        <div class="hero-card-value">EPR → Bell → 实验</div>
+                        <div class="hero-card-note">引向量子信息时代</div>
+                    </div>
+                </div>
+
+                <div class="hero-footnote">
+                    <span class="hero-footnote-pill">合影提示</span>
+                    <span>这张合影常被称为“物理学史上最著名的照片”：29位参会者中有17位是诺贝尔奖得主。</span>
+                </div>
+            </section>
+
+            <section class="debate-stage scroll-animate">
+                <div class="section-head">
+                    <h2 class="section-title">两大阵营</h2>
+                    <p class="section-lead">争论的焦点不是公式本身，而是公式背后是否存在“更深的实在”。下面用两张阵营合影和八条观点，把分歧摆到同一张桌面。</p>
+                </div>
+
+                <div class="debate-grid">
+                    <section class="camp camp-determinist" aria-label="决定论支持者观点">
+                        <div class="camp-head">
+                            <div class="camp-badge">DETERMINISM</div>
+                            <h3 class="camp-title">决定论支持者</h3>
+                            <p class="camp-lead">倾向相信：物理世界在测量之前也有确定结构，概率多半反映“我们不知道”而非“世界本来就随机”。</p>
+                        </div>
+
+                        <figure class="camp-figure">
+                            <img src="../../assets/images/determinist.png" alt="决定论支持者：爱因斯坦、普朗克、德布罗意与薛定谔" class="camp-image" width="2816" height="1536">
+                            <figcaption>决定论阵营：爱因斯坦、普朗克、德布罗意与薛定谔</figcaption>
+                        </figure>
+
+                        <div class="view-grid">
+                            <article class="view-card">
+                                <h4 class="view-name">爱因斯坦</h4>
+                                <div class="view-kicker">口号：上帝不掷骰子</div>
+                                <p class="view-text">坚持局域实在：测量应揭示既有属性；认为量子力学可能不完备，概率来自隐藏变量或更深层理论。</p>
+                                <div class="view-tags">
+                                    <span class="tag">完备性</span>
+                                    <span class="tag">局域性</span>
+                                    <span class="tag">隐变量</span>
+                                </div>
+                            </article>
+
+                            <article class="view-card">
+                                <h4 class="view-name">普朗克</h4>
+                                <div class="view-kicker">倾向：因果与连续的自然图景</div>
+                                <p class="view-text">接受量子化事实，但对“把概率当作终点”保持谨慎；更愿意把统计性视作方法与近似，而非自然律的最终语言。</p>
+                                <div class="view-tags">
+                                    <span class="tag">因果性</span>
+                                    <span class="tag">连续性</span>
+                                    <span class="tag">统计工具</span>
+                                </div>
+                            </article>
+
+                            <article class="view-card">
+                                <h4 class="view-name">德布罗意</h4>
+                                <div class="view-kicker">方案：导波理论（pilot-wave）</div>
+                                <p class="view-text">提出粒子具有确定轨迹，由波函数“引导”；用确定论机制重现量子统计，从而把随机性解释为对隐藏变量的无知。</p>
+                                <div class="view-tags">
+                                    <span class="tag">导波</span>
+                                    <span class="tag">确定轨迹</span>
+                                    <span class="tag">隐变量图景</span>
+                                </div>
+                            </article>
+
+                            <article class="view-card">
+                                <h4 class="view-name">薛定谔</h4>
+                                <div class="view-kicker">疑问：坍缩从何而来？</div>
+                                <p class="view-text">偏好波函数的连续演化（薛定谔方程）；反感“测量时突然坍缩”的断裂叙事，认为这提示解释层面仍不够清晰。</p>
+                                <div class="view-tags">
+                                    <span class="tag">连续演化</span>
+                                    <span class="tag">反坍缩直觉</span>
+                                    <span class="tag">解释缺口</span>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="camp camp-indeterminist" aria-label="概率论支持者观点">
+                        <div class="camp-head">
+                            <div class="camp-badge">INDETERMINACY</div>
+                            <h3 class="camp-title">概率论支持者</h3>
+                            <p class="camp-lead">更强调：测量安排决定可谈论的物理量；量子理论的概率性不是“缺陷”，而是理论的核心结构。</p>
+                        </div>
+
+                        <figure class="camp-figure">
+                            <img src="../../assets/images/indeterminists.png" alt="概率论支持者：玻尔、海森堡、泡利、玻恩" class="camp-image" width="2816" height="1504">
+                            <figcaption>概率论阵营：玻尔、海森堡、泡利与玻恩</figcaption>
+                        </figure>
+
+                        <div class="view-grid">
+                            <article class="view-card">
+                                <h4 class="view-name">玻尔</h4>
+                                <div class="view-kicker">原则：互补性</div>
+                                <p class="view-text">强调实验语境：同一对象在不同装置下呈现不同互补描述；问“测量前它到底是什么”常超出物理可表述范围。</p>
+                                <div class="view-tags">
+                                    <span class="tag">互补性</span>
+                                    <span class="tag">语境</span>
+                                    <span class="tag">经典描述</span>
+                                </div>
+                            </article>
+
+                            <article class="view-card">
+                                <h4 class="view-name">海森堡</h4>
+                                <div class="view-kicker">原则：不确定性</div>
+                                <p class="view-text">指出共轭量不能被同时任意精确赋值；测量并非被动读取，而会参与定义可观察事实，从而限制了经典直觉的适用边界。</p>
+                                <div class="view-tags">
+                                    <span class="tag">不确定性</span>
+                                    <span class="tag">可观测量</span>
+                                    <span class="tag">操作性</span>
+                                </div>
+                            </article>
+
+                            <article class="view-card">
+                                <h4 class="view-name">泡利</h4>
+                                <div class="view-kicker">态度：可观测量优先</div>
+                                <p class="view-text">坚定维护量子规则的自洽性与可计算性；倾向以可观测量、对称性与实验一致性来约束“解释”，反对引入不可检验的图景。</p>
+                                <div class="view-tags">
+                                    <span class="tag">自洽性</span>
+                                    <span class="tag">对称</span>
+                                    <span class="tag">可检验性</span>
+                                </div>
+                            </article>
+
+                            <article class="view-card">
+                                <h4 class="view-name">玻恩</h4>
+                                <div class="view-kicker">贡献：概率诠释 |ψ|²</div>
+                                <p class="view-text">提出波函数模方给出概率的解释（Born rule）；把随机性放到理论核心，使量子力学成为可精确预测统计分布的计算体系。</p>
+                                <div class="view-tags">
+                                    <span class="tag">Born rule</span>
+                                    <span class="tag">统计预测</span>
+                                    <span class="tag">随机性</span>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section class="question-board scroll-animate">
+                <div class="section-head">
+                    <h2 class="section-title">把争论变成三道问题</h2>
+                    <p class="section-lead">它们不会改变你算出的概率，却改变你如何理解“概率从何而来”。点击展开，对照两派回答。</p>
+                </div>
+
+                <div class="qa-list">
+                    <details class="qa" open>
+                        <summary><span class="qa-num">1</span>量子态 ψ 描述的是“现实”，还是“知识”？</summary>
+                        <div class="qa-body">
+                            <div class="qa-col qa-det">
+                                <div class="qa-label">决定论</div>
+                                <p>ψ 更像统计层面的有效描述；单次事件背后可能存在更细致的变量决定结果，概率反映信息不完备。</p>
+                            </div>
+                            <div class="qa-col qa-ind">
+                                <div class="qa-label">概率论</div>
+                                <p>ψ 是连接实验安排与结果的最完整工具；把 ψ 当作“物自身”的写照并非必要，关键是可预测与可检验。</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="qa">
+                        <summary><span class="qa-num">2</span>测量发生了什么：揭示既有属性，还是“生成”结果？</summary>
+                        <div class="qa-body">
+                            <div class="qa-col qa-det">
+                                <div class="qa-label">决定论</div>
+                                <p>测量应当读出系统已有的性质；“坍缩”提示理论在描述单次事件时仍缺少更深机制。</p>
+                            </div>
+                            <div class="qa-col qa-ind">
+                                <div class="qa-label">概率论</div>
+                                <p>测量定义了可谈论的物理量；不同装置对应不同互补描述，试图同时追问全部经典属性会导致矛盾。</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="qa">
+                        <summary><span class="qa-num">3</span>随机来自哪里：自然本性，还是理论空缺？</summary>
+                        <div class="qa-body">
+                            <div class="qa-col qa-det">
+                                <div class="qa-label">决定论</div>
+                                <p>随机是“无知的代名词”：如果掌握隐变量或更深层结构，单次结果也许可被决定。</p>
+                            </div>
+                            <div class="qa-col qa-ind">
+                                <div class="qa-label">概率论</div>
+                                <p>随机是结构性的：不确定性与 Born rule 表明理论天生给出概率分布，而非单次确定值。</p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <section class="context-stage scroll-animate">
+                <div class="section-head">
+                    <h2 class="section-title">会议背景与历史意义</h2>
+                    <p class="section-lead">索尔维会议并没有“证明谁对谁错”，但它把量子力学的哲学分歧固定在可讨论的坐标系里，并把争论推向可检验的方向。</p>
+                </div>
+
+                <div class="context-grid">
+                    <section class="context-card">
+                        <h3 class="context-title">会议背景</h3>
+                        <p class="context-lead">1927年前后，量子力学的核心支柱刚刚搭起；分歧因此更尖锐，也更“必须被说清楚”。</p>
+                        <ol class="timeline">
+                            <li>
+                                <div class="timeline-year">1924</div>
+                                <div class="timeline-text">德布罗意提出物质波：λ = h/p，把“波粒二象性”推向普适原则。</div>
+                            </li>
+                            <li>
+                                <div class="timeline-year">1925</div>
+                                <div class="timeline-text">矩阵力学建立，强调从可观测量出发的运算规则。</div>
+                            </li>
+                            <li>
+                                <div class="timeline-year">1926</div>
+                                <div class="timeline-text">波动力学提出；Born 给出概率诠释 |ψ|²。</div>
+                            </li>
+                            <li>
+                                <div class="timeline-year">1927</div>
+                                <div class="timeline-text">不确定性原理发表；10月在布鲁塞尔召开第五届索尔维会议，争论集中爆发。</div>
+                            </li>
+                        </ol>
+                        <div class="context-note">这场会议的主题是“电子与光子”，参会者几乎覆盖了当时量子理论的关键缔造者与批评者。</div>
+                    </section>
+
+                    <section class="context-card">
+                        <h3 class="context-title">历史意义</h3>
+                        <ul class="impact-list">
+                            <li><strong>操作手册成形：</strong>哥本哈根式的“如何计算并与实验对齐”成为主流工作范式。</li>
+                            <li><strong>挑战被保存：</strong>爱因斯坦的质疑没有消失，后来发展为 EPR 佯谬与对完备性的系统讨论。</li>
+                            <li><strong>哲学变成实验：</strong>贝尔不等式把“隐变量/局域性”的争论转化为可检验的统计命题。</li>
+                            <li><strong>回到当下：</strong>纠缠、测量与概率不再只是诠释问题，也成为量子通信与量子计算的工程资源。</li>
+                        </ul>
+
+                        <div class="closing-card">
+                            <h4 class="closing-title">一句话总结</h4>
+                            <p class="closing-text">索尔维会议让我们看见：量子力学的“计算正确”与“解释满意”可以是两回事，而科学常在这种张力中前进。</p>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="uncertainty-principle.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">不确定性原理</div>
+                </div>
+            </a>
+            <a href="../modern-era/app-track/quantum-tunneling.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一阶段</div>
+                    <div class="page-nav-title">量子隧穿</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/quantum-bg.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/nav-menu.js"></script>
+
+    <style>
+        .solvay-layout {
+            position: relative;
+            max-width: 1240px;
+        }
+
+        .solvay-layout::before {
+            content: "";
+            position: absolute;
+            inset: -140px -16px -40px;
+            background:
+                radial-gradient(800px 420px at 18% 10%, rgba(249, 115, 22, 0.16), transparent 60%),
+                radial-gradient(760px 460px at 86% 18%, rgba(34, 211, 238, 0.16), transparent 62%),
+                radial-gradient(900px 520px at 55% 92%, rgba(168, 85, 247, 0.12), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .solvay-layout>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .solvay-hero {
+            display: grid;
+            gap: var(--spacing-5);
+        }
+
+        .hero-media {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            background: rgba(2, 6, 23, 0.35);
+            box-shadow: 0 18px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: saturate(1.05) contrast(1.03);
+            transform: none;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: var(--spacing-6);
+            background: linear-gradient(180deg,
+                    rgba(2, 6, 23, 0.10) 0%,
+                    rgba(2, 6, 23, 0.68) 56%,
+                    rgba(2, 6, 23, 0.92) 100%);
+        }
+
+        .hero-kicker {
+            font-size: 11px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(226, 232, 240, 0.72);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .hero-title {
+            margin: 0;
+            font-family: var(--font-heading);
+            font-size: clamp(28px, 4vw, 46px);
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .hero-subtitle {
+            margin: var(--spacing-3) 0 0;
+            max-width: 60ch;
+            font-size: var(--text-base);
+            color: rgba(226, 232, 240, 0.86);
+            line-height: 1.8;
+        }
+
+        .hero-cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: var(--spacing-3);
+        }
+
+        .hero-card {
+            padding: 14px 14px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.45);
+            border: 1px solid rgba(148, 163, 184, 0.20);
+        }
+
+        .hero-card-label {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(148, 163, 184, 0.88);
+        }
+
+        .hero-card-value {
+            margin-top: 6px;
+            font-size: var(--text-lg);
+            font-weight: 750;
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .hero-card-note {
+            margin-top: 6px;
+            font-size: var(--text-xs);
+            color: rgba(226, 232, 240, 0.76);
+            line-height: 1.7;
+        }
+
+        .hero-footnote {
+            display: flex;
+            gap: var(--spacing-3);
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px dashed rgba(148, 163, 184, 0.30);
+            background: rgba(2, 6, 23, 0.25);
+            color: rgba(226, 232, 240, 0.76);
+            font-size: var(--text-xs);
+            line-height: 1.7;
+        }
+
+        .hero-footnote-pill {
+            flex: 0 0 auto;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(168, 85, 247, 0.16);
+            border: 1px solid rgba(168, 85, 247, 0.26);
+            color: rgba(216, 180, 254, 0.92);
+        }
+
+        .section-head {
+            margin-top: var(--spacing-7);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .section-title {
+            margin: 0;
+            font-family: var(--font-heading);
+            font-size: clamp(20px, 2.2vw, 28px);
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .section-lead {
+            margin: var(--spacing-2) 0 0;
+            color: rgba(226, 232, 240, 0.80);
+            line-height: 1.9;
+            max-width: 82ch;
+            font-size: var(--text-sm);
+        }
+
+        .debate-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--spacing-5);
+            align-items: start;
+        }
+
+        .camp {
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(15, 23, 42, 0.38);
+            overflow: hidden;
+        }
+
+        .camp-head {
+            padding: var(--spacing-5);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+            background: linear-gradient(180deg, rgba(2, 6, 23, 0.35) 0%, transparent 100%);
+        }
+
+        .camp-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            color: rgba(226, 232, 240, 0.72);
+            background: rgba(2, 6, 23, 0.30);
+        }
+
+        .camp-title {
+            margin: var(--spacing-3) 0 0;
+            font-size: var(--text-xl);
+            font-weight: 750;
+            letter-spacing: -0.01em;
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .camp-lead {
+            margin: var(--spacing-2) 0 0;
+            color: rgba(226, 232, 240, 0.78);
+            line-height: 1.9;
+            font-size: var(--text-sm);
+        }
+
+        .camp-figure {
+            margin: 0;
+        }
+
+        .camp-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-top: 1px solid rgba(148, 163, 184, 0.12);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .camp-figure figcaption {
+            padding: 10px 14px;
+            font-size: var(--text-xs);
+            color: rgba(226, 232, 240, 0.72);
+            background: rgba(2, 6, 23, 0.35);
+        }
+
+        .view-grid {
+            padding: var(--spacing-5);
+            display: grid;
+            gap: var(--spacing-3);
+        }
+
+        .view-card {
+            padding: 14px 14px;
+            border-radius: 16px;
+            background: rgba(2, 6, 23, 0.42);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+        }
+
+        .view-name {
+            margin: 0;
+            font-size: var(--text-base);
+            letter-spacing: -0.01em;
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .view-kicker {
+            margin-top: 6px;
+            font-size: var(--text-xs);
+            color: rgba(226, 232, 240, 0.84);
+            font-weight: 650;
+            letter-spacing: 0.02em;
+        }
+
+        .view-text {
+            margin: var(--spacing-2) 0 0;
+            color: rgba(226, 232, 240, 0.74);
+            line-height: 1.9;
+            font-size: var(--text-sm);
+        }
+
+        .view-tags {
+            margin-top: var(--spacing-3);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            background: rgba(15, 23, 42, 0.28);
+            color: rgba(226, 232, 240, 0.78);
+        }
+
+        .camp-determinist .camp-badge {
+            border-color: rgba(249, 115, 22, 0.28);
+            background: rgba(249, 115, 22, 0.12);
+            color: rgba(253, 186, 116, 0.92);
+        }
+
+        .camp-determinist .tag {
+            border-color: rgba(249, 115, 22, 0.30);
+        }
+
+        .camp-indeterminist .camp-badge {
+            border-color: rgba(34, 211, 238, 0.28);
+            background: rgba(34, 211, 238, 0.10);
+            color: rgba(34, 211, 238, 0.92);
+        }
+
+        .camp-indeterminist .tag {
+            border-color: rgba(34, 211, 238, 0.30);
+        }
+
+        .qa-list {
+            display: grid;
+            gap: var(--spacing-3);
+        }
+
+        .qa {
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            background: rgba(15, 23, 42, 0.32);
+            overflow: hidden;
+        }
+
+        .qa summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 750;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .qa summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .qa[open] summary {
+            border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+            background: rgba(2, 6, 23, 0.22);
+        }
+
+        .qa-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            background: rgba(168, 85, 247, 0.18);
+            border: 1px solid rgba(168, 85, 247, 0.28);
+            color: rgba(216, 180, 254, 0.92);
+            flex: 0 0 auto;
+        }
+
+        .qa-body {
+            padding: var(--spacing-4);
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--spacing-3);
+        }
+
+        .qa-col {
+            padding: 12px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            background: rgba(2, 6, 23, 0.38);
+        }
+
+        .qa-label {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .qa-det .qa-label {
+            color: rgba(253, 186, 116, 0.92);
+        }
+
+        .qa-ind .qa-label {
+            color: rgba(34, 211, 238, 0.92);
+        }
+
+        .qa-col p {
+            margin: 0;
+            color: rgba(226, 232, 240, 0.74);
+            line-height: 1.9;
+            font-size: var(--text-sm);
+        }
+
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--spacing-5);
+            align-items: start;
+        }
+
+        .context-card {
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(15, 23, 42, 0.34);
+            padding: var(--spacing-6);
+        }
+
+        .context-title {
+            margin: 0;
+            font-family: var(--font-heading);
+            font-size: var(--text-xl);
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .context-lead {
+            margin: var(--spacing-3) 0 var(--spacing-4);
+            color: rgba(226, 232, 240, 0.78);
+            line-height: 1.9;
+            font-size: var(--text-sm);
+        }
+
+        .timeline {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .timeline li {
+            display: grid;
+            gap: 4px;
+            padding-left: 14px;
+            border-left: 2px solid rgba(168, 85, 247, 0.32);
+        }
+
+        .timeline-year {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            color: rgba(216, 180, 254, 0.92);
+        }
+
+        .timeline-text {
+            color: rgba(226, 232, 240, 0.74);
+            line-height: 1.8;
+            font-size: var(--text-sm);
+        }
+
+        .context-note {
+            margin-top: var(--spacing-4);
+            padding-top: var(--spacing-4);
+            border-top: 1px solid rgba(148, 163, 184, 0.14);
+            color: rgba(226, 232, 240, 0.72);
+            font-size: var(--text-xs);
+            line-height: 1.8;
+        }
+
+        .impact-list {
+            margin: var(--spacing-4) 0 0;
+            padding-left: 18px;
+            color: rgba(226, 232, 240, 0.74);
+            line-height: 1.9;
+            font-size: var(--text-sm);
+            display: grid;
+            gap: 10px;
+        }
+
+        .impact-list strong {
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .closing-card {
+            margin-top: var(--spacing-5);
+            padding: var(--spacing-5);
+            border-radius: 18px;
+            border: 1px solid rgba(168, 85, 247, 0.22);
+            background: linear-gradient(135deg,
+                    rgba(168, 85, 247, 0.14) 0%,
+                    rgba(34, 211, 238, 0.10) 46%,
+                    rgba(249, 115, 22, 0.10) 100%);
+        }
+
+        .closing-title {
+            margin: 0;
+            font-size: var(--text-lg);
+            color: rgba(255, 255, 255, 0.96);
+        }
+
+        .closing-text {
+            margin: var(--spacing-2) 0 0;
+            color: rgba(226, 232, 240, 0.80);
+            line-height: 1.9;
+            font-size: var(--text-sm);
+        }
+
+        @media (max-width: 1024px) {
+            .hero-overlay {
+                padding: var(--spacing-5);
+            }
+
+            .debate-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .context-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .qa-body {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!-- 增强编辑器模态框模板 - 复制此代码到所有页面 -->
+<div class="editor-modal" id="editor-modal">
+    <div class="modal-overlay" id="editor-overlay"></div>
+    <div class="editor-container">
+        <div class="editor-header">
+            <span class="editor-title">📝 内容编辑器</span>
+            <button class="modal-close" id="editor-close">&times;</button>
+        </div>
+
+        <!-- 标签页导航 -->
+        <div class="editor-tabs">
+            <button class="editor-tab active" data-tab="text">📄 文本内容</button>
+            <button class="editor-tab" data-tab="links">🔗 链接</button>
+            <button class="editor-tab" data-tab="images">🖼️ 图片</button>
+            <button class="editor-tab" data-tab="videos">🎬 视频</button>
+            <button class="editor-tab" data-tab="docs">📁 文档</button>
+        </div>
+
+        <!-- 文本编辑标签页 -->
+        <div class="editor-tab-content active" data-tab="text">
+            <textarea class="editor-textarea" id="editor-textarea"></textarea>
+            <div class="editor-preview doc-content" id="editor-preview"></div>
+        </div>
+
+        <!-- 链接管理标签页 -->
+        <div class="editor-tab-content" data-tab="links">
+            <div class="resource-form">
+                <h4 style="color: var(--color-text-primary); margin-bottom: var(--spacing-4);">添加新链接</h4>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">链接名称</label>
+                    <input type="text" class="resource-form-input" id="link-name" placeholder="例如：Wikipedia相对论">
+                </div>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">链接URL</label>
+                    <input type="url" class="resource-form-input" id="link-url" placeholder="https://example.com">
+                </div>
+                <div class="resource-form-actions">
+                    <button class="resource-form-btn primary" id="add-link-btn">➕ 添加链接</button>
+                </div>
+            </div>
+            <div class="resource-list-panel" id="links-list"></div>
+        </div>
+
+        <!-- 图片管理标签页 -->
+        <div class="editor-tab-content" data-tab="images">
+            <div class="resource-form">
+                <h4 style="color: var(--color-text-primary); margin-bottom: var(--spacing-4);">添加图片</h4>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">图片名称</label>
+                    <input type="text" class="resource-form-input" id="image-name" placeholder="例如：示意图">
+                </div>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">图片URL</label>
+                    <input type="url" class="resource-form-input" id="image-url"
+                        placeholder="https://example.com/image.jpg">
+                    <span class="form-hint">输入图片的网络地址，或使用下方上传本地图片</span>
+                </div>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">或上传本地图片</label>
+                    <label class="file-upload-label">
+                        <span>📁 选择图片文件</span>
+                        <input type="file" class="file-upload-input" id="image-file" accept="image/*">
+                    </label>
+                    <span class="form-hint">支持 JPG、PNG、GIF 格式，最大 2MB</span>
+                </div>
+                <div class="resource-form-actions">
+                    <button class="resource-form-btn primary" id="add-image-btn">➕ 添加图片</button>
+                </div>
+            </div>
+            <div class="resource-list-panel" id="images-list"></div>
+        </div>
+
+        <!-- 视频管理标签页 -->
+        <div class="editor-tab-content" data-tab="videos">
+            <div class="resource-form">
+                <h4 style="color: var(--color-text-primary); margin-bottom: var(--spacing-4);">添加视频</h4>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">视频名称</label>
+                    <input type="text" class="resource-form-input" id="video-name" placeholder="例如：讲解视频">
+                </div>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">视频URL</label>
+                    <input type="url" class="resource-form-input" id="video-url"
+                        placeholder="YouTube/Bilibili链接或直接视频URL">
+                    <span class="form-hint">支持 YouTube、Bilibili 链接或直接视频URL</span>
+                </div>
+                <div class="resource-form-actions">
+                    <button class="resource-form-btn primary" id="add-video-btn">➕ 添加视频</button>
+                </div>
+            </div>
+            <div class="resource-list-panel" id="videos-list"></div>
+        </div>
+
+        <!-- 文档管理标签页 -->
+        <div class="editor-tab-content" data-tab="docs">
+            <div class="resource-form">
+                <h4 style="color: var(--color-text-primary); margin-bottom: var(--spacing-4);">添加文档</h4>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">文档名称</label>
+                    <input type="text" class="resource-form-input" id="doc-name" placeholder="例如：论文原文">
+                </div>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">文档URL</label>
+                    <input type="url" class="resource-form-input" id="doc-url"
+                        placeholder="https://example.com/document.pdf">
+                </div>
+                <div class="resource-form-group">
+                    <label class="resource-form-label">文档类型</label>
+                    <select class="resource-form-input" id="doc-type">
+                        <option value="pdf">PDF</option>
+                        <option value="doc">Word (DOC/DOCX)</option>
+                        <option value="ppt">PowerPoint (PPT/PPTX)</option>
+                        <option value="xls">Excel (XLS/XLSX)</option>
+                        <option value="txt">文本文件 (TXT)</option>
+                        <option value="md">Markdown (MD)</option>
+                    </select>
+                </div>
+                <div class="resource-form-actions">
+                    <button class="resource-form-btn primary" id="add-doc-btn">➕ 添加文档</button>
+                </div>
+            </div>
+            <div class="resource-list-panel" id="docs-list"></div>
+        </div>
+
+        <div class="editor-footer">
+            <button class="btn btn-secondary" id="editor-cancel">关闭</button>
+            <button class="btn btn-primary" id="editor-save">保存文本</button>
+        </div>
+    </div>
+</div>

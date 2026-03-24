@@ -1,0 +1,445 @@
+/* 量子力学探索之旅 - 主页样式 */
+
+/* Home Main Layout */
+.home-main {
+    padding-top: var(--navbar-height);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    min-height: calc(100vh - var(--navbar-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-20) var(--spacing-6);
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: var(--spacing-6);
+}
+
+.title-line {
+    display: block;
+}
+
+.title-line:nth-child(2) {
+    font-size: 1.2em;
+    margin: var(--spacing-2) 0;
+}
+
+.hero-subtitle {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto var(--spacing-8);
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    justify-content: center;
+}
+
+.hero-buttons .btn {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--text-lg);
+}
+
+/* Hero Decoration - Quantum Particles */
+.hero-decoration {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* 量子轨道 */
+.quantum-orbit {
+    position: absolute;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+}
+
+.quantum-orbit-1 {
+    width: 300px;
+    height: 300px;
+    margin: -150px 0 0 -150px;
+    animation: spin 20s linear infinite;
+}
+
+.quantum-orbit-2 {
+    width: 500px;
+    height: 500px;
+    margin: -250px 0 0 -250px;
+    animation: spin 30s linear infinite reverse;
+    border-color: rgba(99, 102, 241, 0.15);
+}
+
+.quantum-orbit-3 {
+    width: 700px;
+    height: 700px;
+    margin: -350px 0 0 -350px;
+    animation: spin 40s linear infinite;
+    border-color: rgba(236, 72, 153, 0.1);
+}
+
+/* 量子粒子 */
+.quantum-particle {
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0 0 20px currentColor;
+}
+
+.particle-electron {
+    width: 12px;
+    height: 12px;
+    background: var(--color-secondary);
+    color: rgba(34, 211, 238, 0.5);
+    top: 30%;
+    right: 20%;
+    animation: particleDrift 4s ease-in-out infinite;
+}
+
+.particle-photon {
+    width: 8px;
+    height: 8px;
+    background: var(--color-quantum-pink);
+    color: rgba(236, 72, 153, 0.5);
+    bottom: 30%;
+    left: 15%;
+    animation: particleDrift 5s ease-in-out infinite 1s;
+}
+
+.particle-quark {
+    width: 6px;
+    height: 6px;
+    background: var(--color-quantum-purple);
+    color: rgba(168, 85, 247, 0.5);
+    top: 60%;
+    right: 30%;
+    animation: particleDrift 6s ease-in-out infinite 0.5s;
+}
+
+/* 介绍区域 */
+.intro-section {
+    padding: var(--spacing-16) 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(18, 18, 31, 0.5) 100%);
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: var(--text-lg);
+    line-height: 1.8;
+}
+
+.intro-content p {
+    margin-bottom: var(--spacing-4);
+}
+
+.intro-content strong {
+    color: var(--color-quantum-purple);
+}
+
+/* Section 标题 */
+.section-title {
+    font-size: var(--text-3xl);
+    text-align: center;
+    margin-bottom: var(--spacing-4);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-12);
+}
+
+.section-desc {
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+}
+
+/* 课程区域 */
+.courses-section {
+    padding: var(--spacing-16) 0;
+}
+
+.courses-section-alt {
+    background: rgba(18, 18, 31, 0.3);
+}
+
+/* 时期标签 */
+.era-badge {
+    display: inline-block;
+    padding: var(--spacing-1) var(--spacing-3);
+    background: rgba(168, 85, 247, 0.2);
+    color: var(--color-quantum-purple);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-2);
+}
+
+/* 卡片网格 */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-6);
+}
+
+/* 双列网格用于并行线 */
+.cards-grid-dual {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-8);
+}
+
+.track-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.track-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-2);
+    padding-bottom: var(--spacing-2);
+    border-bottom: 2px solid var(--card-color, var(--color-primary));
+}
+
+/* 课程卡片 */
+.course-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-6);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--card-color, var(--color-quantum-purple));
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--card-color, var(--color-quantum-purple));
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(168, 85, 247, 0.1);
+}
+
+.course-card:hover::before {
+    opacity: 1;
+}
+
+/* 卡片颜色变体 */
+.course-card[data-color="blue"] {
+    --card-color: var(--color-blue);
+}
+
+.course-card[data-color="purple"] {
+    --card-color: var(--color-purple);
+}
+
+.course-card[data-color="cyan"] {
+    --card-color: var(--color-cyan);
+}
+
+.course-card[data-color="amber"] {
+    --card-color: var(--color-amber);
+}
+
+.course-card[data-color="pink"] {
+    --card-color: var(--color-pink);
+}
+
+.course-card[data-color="green"] {
+    --card-color: var(--color-green);
+}
+
+.course-card[data-color="indigo"] {
+    --card-color: var(--color-indigo);
+}
+
+.course-card[data-color="teal"] {
+    --card-color: var(--color-teal);
+}
+
+.course-card[data-color="red"] {
+    --card-color: var(--color-red);
+}
+
+.course-card[data-color="orange"] {
+    --card-color: var(--color-orange);
+}
+
+/* 交互标记 */
+.course-card[data-interactive="true"]::after {
+    content: '⭐ 交互';
+    position: absolute;
+    top: var(--spacing-3);
+    right: var(--spacing-3);
+    padding: var(--spacing-1) var(--spacing-2);
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--color-accent);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-xs);
+    font-weight: 600;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-4);
+}
+
+.card-title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-3);
+}
+
+.card-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    flex-grow: 1;
+    line-height: 1.6;
+}
+
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: var(--spacing-4);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--card-color, var(--color-quantum-purple));
+    transition: transform var(--transition-fast);
+}
+
+.course-card:hover .card-link {
+    transform: translateX(5px);
+}
+
+/* 时间线连接 */
+.timeline-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-8) 0;
+}
+
+.timeline-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+    color: var(--color-text-muted);
+}
+
+.timeline-arrow::before {
+    content: '';
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--color-quantum-purple), var(--color-text-muted));
+}
+
+.timeline-arrow::after {
+    content: '▼';
+    font-size: var(--text-sm);
+}
+
+/* 页脚 */
+.footer {
+    padding: var(--spacing-12) 0;
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-4);
+}
+
+.footer-text {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2);
+}
+
+.footer-copyright {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+    .cards-grid-dual {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: var(--spacing-12) var(--spacing-4);
+        min-height: auto;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}

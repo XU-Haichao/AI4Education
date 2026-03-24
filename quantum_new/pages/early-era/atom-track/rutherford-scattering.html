@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="卢瑟福模型 - α粒子散射揭示原子核的存在">
+    <title>卢瑟福模型 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">💫</span>
+                <span class="nav-page-name">卢瑟福模型</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+            <div class="demo-panel">
+                <!-- 双屏展示区 -->
+                <div class="demo-split-container">
+                    <!-- 左侧：散射对比实验 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">α粒子散射实验</div>
+                        <canvas id="scattering-canvas" class="demo-canvas"></canvas>
+                        <!-- 模型切换标签 -->
+                        <div class="model-tabs">
+                            <button class="model-tab active" data-model="nucleus">核式模型</button>
+                            <button class="model-tab" data-model="pudding">布丁模型</button>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：行星模型 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">卢瑟福行星模型</div>
+                        <canvas id="planetary-canvas" class="demo-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">实验控制</h3>
+
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>α粒子发射高度</span>
+                            <span class="control-value" id="height-value">0</span>
+                        </div>
+                        <input type="range" id="height-slider" min="-120" max="120" value="0" step="5">
+                    </div>
+
+                    <div class="control-buttons">
+                        <button class="control-btn" id="fire-btn">发射一颗α粒子</button>
+                        <button class="control-btn primary" id="fire-burst-btn">发射大量α粒子</button>
+                    </div>
+                </div>
+
+                <!-- 结果面板 -->
+                <div class="result-panel">
+                    <h3 class="control-title">散射统计</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">发射总数</div>
+                            <div class="result-value" id="total-count">0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">小角度散射 (&lt;10°)</div>
+                            <div class="result-value" id="small-angle-count">0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">大角度散射 (&gt;90°)</div>
+                            <div class="result-value" id="large-angle-count">0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">反弹 (&gt;150°)</div>
+                            <div class="result-value" id="backscatter-count">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 学习内容</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content">
+                    <!-- 内容将由 JS 渲染 -->
+                </div>
+
+                <!-- 物理学家介绍 -->
+                <div class="physicist-card">
+                    <img src="../../../assets/images/rutherford.png" alt="欧内斯特·卢瑟福" class="physicist-image">
+                    <div class="physicist-info">
+                        <h4>欧内斯特·卢瑟福</h4>
+                        <p>Ernest Rutherford (1871-1937)</p>
+                        <p class="physicist-desc">新西兰/英国物理学家，1908年诺贝尔化学奖得主。被誉为"原子核物理学之父"。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="thomson-model.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">汤姆孙模型</div>
+                </div>
+            </a>
+            <a href="bohr-model.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一节</div>
+                    <div class="page-nav-title">玻尔模型</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/early-era/rutherford-scattering.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('rutherford-scattering', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        /* 模型切换标签 */
+        .model-tabs {
+            position: absolute;
+            bottom: var(--spacing-3);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--spacing-2);
+            background: rgba(0, 0, 0, 0.6);
+            padding: var(--spacing-2);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .model-tab {
+            padding: var(--spacing-2) var(--spacing-4);
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .model-tab:hover {
+            border-color: var(--color-quantum-purple);
+            color: var(--color-text-primary);
+        }
+
+        .model-tab.active {
+            background: var(--color-quantum-purple);
+            border-color: var(--color-quantum-purple);
+            color: white;
+        }
+
+        /* 物理学家卡片样式 */
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .physicist-desc {
+            margin-top: var(--spacing-2);
+        }
+
+        @media (max-width: 768px) {
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .model-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+
+</html>

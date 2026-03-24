@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="费曼图 - 粒子相互作用的可视化语言">
+    <title>费曼图 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">✏️</span>
+                <span class="nav-page-name">费曼图</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+            <div class="demo-panel">
+                <!-- 主演示区 -->
+                <div class="demo-main-container">
+                    <canvas id="feynman-canvas" class="demo-canvas"></canvas>
+                </div>
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">费曼图类型</h3>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>相互作用过程</span>
+                        </div>
+                        <div class="preset-buttons diagram-grid" style="margin-top: var(--spacing-2);">
+                            <button class="preset-btn active" data-diagram="electron-scattering">电子散射</button>
+                            <button class="preset-btn" data-diagram="pair-annihilation">正负电子湮灭</button>
+                            <button class="preset-btn" data-diagram="compton">康普顿散射</button>
+                            <button class="preset-btn" data-diagram="pair-production">正负电子对产生</button>
+                        </div>
+                    </div>
+
+                    <div class="control-buttons" style="margin-top: var(--spacing-4);">
+                        <button class="control-btn" id="reset-btn">重置</button>
+                        <button class="control-btn primary" id="play-btn">播放动画</button>
+                    </div>
+                </div>
+
+                <!-- 结果面板 -->
+                <div class="result-panel">
+                    <h3 class="control-title">图元素</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">费米子线</div>
+                            <div class="result-value" style="font-size: var(--text-base);">→—→</div>
+                            <span class="result-unit">实线+箭头</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">光子线</div>
+                            <div class="result-value" style="font-size: var(--text-base);">∿∿∿</div>
+                            <span class="result-unit">波浪线</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">顶点</div>
+                            <div class="result-value" style="font-size: var(--text-base);">●</div>
+                            <span class="result-unit">相互作用点</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">当前过程</div>
+                            <div class="result-value" id="process-name" style="font-size: var(--text-sm);">e⁻e⁻→e⁻e⁻
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 学习内容</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content"></div>
+
+                <!-- 物理学家介绍 -->
+                <div class="physicist-card">
+                    <img src="../../../assets/images/feynman.png" alt="理查德·费曼" class="physicist-image">
+                    <div class="physicist-info">
+                        <h4>理查德·费曼</h4>
+                        <p>Richard Feynman (1918-1988)</p>
+                        <p class="physicist-desc">费曼图是他发明的革命性工具，使复杂的量子场论计算变得直观易懂。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="quantum-field-theory.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">量子场论</div>
+                </div>
+            </a>
+            <a href="standard-model.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一节</div>
+                    <div class="page-nav-title">标准模型</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/modern-era/feynman-diagrams.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('feynman-diagrams', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        /* 稍微压缩费曼图画布高度，减少无效留白 */
+        .demo-main-container {
+            height: clamp(240px, 42vh, 420px);
+        }
+
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--spacing-2);
+        }
+
+        @media (min-width: 900px) {
+            .diagram-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        .diagram-grid .preset-btn {
+            width: 100%;
+            text-align: center;
+            padding: var(--spacing-2) var(--spacing-3);
+        }
+
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        @media (max-width: 768px) {
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

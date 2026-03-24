@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <!-- Base Gas Gradient -->
+    <radialGradient id="jupiterBase" cx="40%" cy="40%" r="80%">
+      <stop offset="0%" stop-color="#E8CFA2" />
+      <stop offset="60%" stop-color="#C79F6B" />
+      <stop offset="100%" stop-color="#6B4423" />
+    </radialGradient>
+
+    <!-- Band Gradients -->
+    <linearGradient id="bandDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A06A3B" />
+      <stop offset="50%" stop-color="#8B5A2B" />
+      <stop offset="100%" stop-color="#A06A3B" />
+    </linearGradient>
+    
+    <linearGradient id="bandLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EED8AE" />
+      <stop offset="50%" stop-color="#F5DEB3" />
+      <stop offset="100%" stop-color="#EED8AE" />
+    </linearGradient>
+
+    <!-- Great Red Spot Gradient -->
+    <radialGradient id="redSpot" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E57359" />
+      <stop offset="70%" stop-color="#C0392B" />
+      <stop offset="100%" stop-color="#8D281E" />
+    </radialGradient>
+
+    <!-- Inner Shadow -->
+    <radialGradient id="planetShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="88%" stop-color="rgba(0,0,0,0)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0.5)" />
+    </radialGradient>
+  </defs>
+
+  <!-- Clipping mask to keep bands inside sphere -->
+  <clipPath id="planetClip">
+    <circle cx="100" cy="100" r="95" />
+  </clipPath>
+
+  <!-- Main Body -->
+  <g clip-path="url(#planetClip)">
+    <!-- Base Color -->
+    <rect x="0" y="0" width="200" height="200" fill="url(#jupiterBase)" />
+
+    <!-- Bands -->
+    <!-- North Polar Region -->
+    <rect x="0" y="5" width="200" height="25" fill="#8D6E50" opacity="0.8" />
+    
+    <!-- Northern Bands -->
+    <path d="M 0 40 Q 100 45 200 40 L 200 55 Q 100 60 0 55 Z" fill="url(#bandDark)" />
+    <path d="M 0 55 Q 100 60 200 55 L 200 70 Q 100 75 0 70 Z" fill="url(#bandLight)" opacity="0.7"/>
+    <path d="M 0 70 Q 100 75 200 70 L 200 90 Q 100 95 0 90 Z" fill="#B68054" />
+
+    <!-- Equator -->
+    <path d="M -10 90 Q 100 95 210 90 L 210 110 Q 100 115 -10 110 Z" fill="#E8D5B5" opacity="0.9"/>
+
+    <!-- Southern Bands -->
+    <path d="M 0 110 Q 100 115 200 110 L 200 135 Q 100 140 0 135 Z" fill="#A06A3B" />
+    <path d="M 0 135 Q 100 140 200 135 L 200 150 Q 100 155 0 150 Z" fill="url(#bandLight)" opacity="0.6"/>
+    <path d="M 0 150 Q 100 155 200 150 L 200 170 Q 100 175 0 170 Z" fill="#8B5A2B" opacity="0.9"/>
+
+    <!-- Great Red Spot (positioned in southern hemisphere) -->
+    <ellipse cx="60" cy="125" rx="18" ry="10" fill="url(#redSpot)" transform="rotate(-5, 60, 125)" />
+    <!-- Storm turbulence around spot -->
+    <path d="M 35 125 Q 60 110 85 125" fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="1" />
+  </g>
+
+  <!-- Inner Shadow for volume -->
+  <circle cx="100" cy="100" r="95" fill="url(#planetShadow)" />
+
+  <!-- Atmosphere Halo -->
+  <circle cx="100" cy="100" r="97" fill="none" stroke="rgba(232, 207, 162, 0.3)" stroke-width="4" />
+</svg>

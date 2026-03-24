@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="探索量子力学的发展历程 - 从经典物理的困境到现代量子应用的交互式可视化教学">
+    <title>量子探索之旅 | Quantum Explorer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- KaTeX for Math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-menu" id="nav-menu">
+                <!-- 第一阶段：早期准备 -->
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        早期准备
+                        <span class="dropdown-arrow">▾</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <span class="dropdown-header"
+                            style="padding: 0.5rem 1rem; font-size: 0.7rem; color: #64748b;">原子结构</span>
+                        <a href="pages/early-era/atom-track/thomson-model.html" class="dropdown-item">
+                            <span class="item-icon">🧪</span>
+                            汤姆孙模型
+                        </a>
+                        <a href="pages/early-era/atom-track/rutherford-scattering.html" class="dropdown-item">
+                            <span class="item-icon">💫</span>
+                            卢瑟福模型
+                        </a>
+                        <a href="pages/early-era/atom-track/bohr-model.html" class="dropdown-item">
+                            <span class="item-icon">⚛️</span>
+                            玻尔模型
+                        </a>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 0.5rem 0;">
+                        <span class="dropdown-header"
+                            style="padding: 0.5rem 1rem; font-size: 0.7rem; color: #64748b;">光的本质</span>
+                        <a href="pages/early-era/light-track/blackbody-radiation.html" class="dropdown-item">
+                            <span class="item-icon">🔥</span>
+                            黑体辐射
+                        </a>
+                        <a href="pages/early-era/light-track/photoelectric-effect.html" class="dropdown-item">
+                            <span class="item-icon">💡</span>
+                            光电效应
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 第二阶段：理论建立 -->
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        理论建立
+                        <span class="dropdown-arrow">▾</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="pages/middle-era/de-broglie-wave.html" class="dropdown-item">
+                            <span class="item-icon">🌊</span>
+                            德布罗意波
+                        </a>
+                        <a href="pages/middle-era/double-slit.html" class="dropdown-item">
+                            <span class="item-icon">🎯</span>
+                            双缝干涉
+                        </a>
+                        <a href="pages/middle-era/schrodinger-equation.html" class="dropdown-item">
+                            <span class="item-icon">📐</span>
+                            薛定谔方程
+                        </a>
+                        <a href="pages/middle-era/uncertainty-principle.html" class="dropdown-item">
+                            <span class="item-icon">🎲</span>
+                            不确定性原理
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 第三阶段：深化与应用 -->
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle">
+                        深化与应用
+                        <span class="dropdown-arrow">▾</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <span class="dropdown-header"
+                            style="padding: 0.5rem 1rem; font-size: 0.7rem; color: #64748b;">理论深化</span>
+                        <a href="pages/modern-era/theory-track/path-integral.html" class="dropdown-item">
+                            <span class="item-icon">🛤️</span>
+                            路径积分
+                        </a>
+                        <a href="pages/modern-era/theory-track/quantum-field-theory.html" class="dropdown-item">
+                            <span class="item-icon">🌌</span>
+                            量子场论
+                        </a>
+                        <a href="pages/modern-era/theory-track/feynman-diagrams.html" class="dropdown-item">
+                            <span class="item-icon">✏️</span>
+                            费曼图
+                        </a>
+                        <a href="pages/modern-era/theory-track/standard-model.html" class="dropdown-item">
+                            <span class="item-icon">🔬</span>
+                            标准模型
+                        </a>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 0.5rem 0;">
+                        <span class="dropdown-header"
+                            style="padding: 0.5rem 1rem; font-size: 0.7rem; color: #64748b;">量子应用</span>
+                        <a href="pages/modern-era/app-track/quantum-tunneling.html" class="dropdown-item">
+                            <span class="item-icon">🚇</span>
+                            量子隧穿
+                        </a>
+                        <a href="pages/modern-era/app-track/quantum-entanglement.html" class="dropdown-item">
+                            <span class="item-icon">🔗</span>
+                            量子纠缠
+                        </a>
+                        <a href="pages/modern-era/app-track/quantum-computing.html" class="dropdown-item">
+                            <span class="item-icon">💻</span>
+                            量子计算
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主页内容 -->
+    <main class="home-main">
+        <!-- Hero 区域 -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line">探索</span>
+                    <span class="title-line quantum-text">量子世界</span>
+                    <span class="title-line">的奇妙之旅</span>
+                </h1>
+                <p class="hero-subtitle">
+                    从经典物理的困境到现代量子应用，通过交互式可视化理解微观世界的神奇规律
+                </p>
+                <div class="hero-buttons">
+                    <a href="pages/early-era/atom-track/thomson-model.html" class="btn btn-primary">
+                        <span>开始探索</span>
+                        <span class="btn-arrow">→</span>
+                    </a>
+                    <a href="#phases" class="btn btn-secondary">
+                        <span>了解更多</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 量子装饰元素 -->
+            <div class="hero-decoration">
+                <div class="quantum-orbit quantum-orbit-1"></div>
+                <div class="quantum-orbit quantum-orbit-2"></div>
+                <div class="quantum-orbit quantum-orbit-3"></div>
+                <div class="quantum-particle particle-electron"></div>
+                <div class="quantum-particle particle-photon"></div>
+                <div class="quantum-particle particle-quark"></div>
+            </div>
+        </section>
+
+        <!-- 介绍区域 -->
+        <section class="intro-section">
+            <div class="container">
+                <h2 class="section-title">什么是量子力学？</h2>
+                <div class="intro-content" id="home-intro-content">
+                    <p>
+                        量子力学是描述微观世界的物理理论，它揭示了原子、电子和光子等微小粒子的奇异行为。
+                    </p>
+                    <p>
+                        <strong>波粒二象性</strong>告诉我们，粒子既可以表现得像波，也可以表现得像粒子。
+                        <strong>不确定性原理</strong>则表明，我们无法同时精确测量粒子的位置和动量。
+                    </p>
+                    <p>
+                        这些看似违反直觉的规律，却是我们手机、电脑、激光器等现代科技的基础。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第一阶段：早期准备 -->
+        <section class="courses-section" id="phases">
+            <div class="container">
+                <div class="section-header">
+                    <span class="era-badge">1890s - 1913</span>
+                    <h2 class="section-title">第一阶段：早期准备</h2>
+                    <p class="section-desc">原子结构与光的本质——两条并行的探索之路</p>
+                </div>
+
+                <div class="cards-grid-dual">
+                    <!-- 原子结构线 -->
+                    <div class="track-column">
+                        <div class="track-title" style="--card-color: var(--color-cyan);">
+                            <span>⚛️</span> 原子结构探索
+                        </div>
+                        <a href="pages/early-era/atom-track/thomson-model.html" class="course-card" data-color="cyan"
+                            data-interactive="true">
+                            <div class="card-icon">🧪</div>
+                            <h3 class="card-title">汤姆孙模型</h3>
+                            <p class="card-desc">阴极射线实验与葡萄干布丁模型——原子结构的第一次探索</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/early-era/atom-track/rutherford-scattering.html" class="course-card"
+                            data-color="cyan" data-interactive="true">
+                            <div class="card-icon">💫</div>
+                            <h3 class="card-title">卢瑟福模型</h3>
+                            <p class="card-desc">α粒子散射实验揭示原子核的存在</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/early-era/atom-track/bohr-model.html" class="course-card" data-color="cyan"
+                            data-interactive="true">
+                            <div class="card-icon">⚛️</div>
+                            <h3 class="card-title">玻尔模型</h3>
+                            <p class="card-desc">量子化的电子轨道与原子光谱</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                    </div>
+
+                    <!-- 光的本质线 -->
+                    <div class="track-column">
+                        <div class="track-title" style="--card-color: var(--color-amber);">
+                            <span>💡</span> 光的本质探索
+                        </div>
+                        <a href="pages/early-era/light-track/blackbody-radiation.html" class="course-card"
+                            data-color="amber" data-interactive="true">
+                            <div class="card-icon">🔥</div>
+                            <h3 class="card-title">黑体辐射</h3>
+                            <p class="card-desc">紫外灾难与普朗克的能量量子化假说</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/early-era/light-track/photoelectric-effect.html" class="course-card"
+                            data-color="amber" data-interactive="true">
+                            <div class="card-icon">💡</div>
+                            <h3 class="card-title">光电效应</h3>
+                            <p class="card-desc">爱因斯坦的光子假说与光的粒子性</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/early-era/light-track/compton-scattering.html" class="course-card"
+                            data-color="amber">
+                            <div class="card-icon">✨</div>
+                            <h3 class="card-title">康普顿散射</h3>
+                            <p class="card-desc">光子动量的实验证据</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 时间线连接 -->
+        <div class="timeline-connector">
+            <div class="timeline-arrow"></div>
+        </div>
+
+        <!-- 第二阶段：理论建立 -->
+        <section class="courses-section courses-section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <span class="era-badge">1920s - 1927</span>
+                    <h2 class="section-title">第二阶段：理论建立</h2>
+                    <p class="section-desc">波粒二象性与量子力学的数学框架</p>
+                </div>
+
+                <div class="cards-grid">
+                    <a href="pages/middle-era/de-broglie-wave.html" class="course-card" data-color="purple"
+                        data-interactive="true">
+                        <div class="card-icon">🌊</div>
+                        <h3 class="card-title">德布罗意波</h3>
+                        <p class="card-desc">物质也具有波动性——波粒二象性的完整图景</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+                    <a href="pages/middle-era/double-slit.html" class="course-card" data-color="purple"
+                        data-interactive="true">
+                        <div class="card-icon">🎯</div>
+                        <h3 class="card-title">双缝干涉</h3>
+                        <p class="card-desc">量子力学最神秘的实验——单个粒子如何产生干涉？</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+                    <a href="pages/middle-era/schrodinger-equation.html" class="course-card" data-color="purple"
+                        data-interactive="true">
+                        <div class="card-icon">📐</div>
+                        <h3 class="card-title">薛定谔方程</h3>
+                        <p class="card-desc">波函数的时间演化——量子力学的核心方程</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+                    <a href="pages/middle-era/uncertainty-principle.html" class="course-card" data-color="purple"
+                        data-interactive="true">
+                        <div class="card-icon">🎲</div>
+                        <h3 class="card-title">不确定性原理</h3>
+                        <p class="card-desc">位置越确定，动量越不确定——海森堡的革命性发现</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+                    <a href="pages/middle-era/solvay-conference.html" class="course-card" data-color="indigo">
+                        <div class="card-icon">👥</div>
+                        <h3 class="card-title">1927索尔维会议</h3>
+                        <p class="card-desc">物理学史上最著名的合影——爱因斯坦与玻尔的世纪辩论</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 时间线连接 -->
+        <div class="timeline-connector">
+            <div class="timeline-arrow"></div>
+        </div>
+
+        <!-- 第三阶段：深化与应用 -->
+        <section class="courses-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="era-badge">1930s - 今</span>
+                    <h2 class="section-title">第三阶段：深化与应用</h2>
+                    <p class="section-desc">理论的进一步发展与量子技术的应用</p>
+                </div>
+
+                <div class="cards-grid-dual">
+                    <!-- 理论深化 -->
+                    <div class="track-column">
+                        <div class="track-title" style="--card-color: var(--color-pink);">
+                            <span>📚</span> 理论深化
+                        </div>
+                        <a href="pages/modern-era/theory-track/path-integral.html" class="course-card"
+                            data-color="pink">
+                            <div class="card-icon">🛤️</div>
+                            <h3 class="card-title">路径积分</h3>
+                            <p class="card-desc">粒子走遍所有可能路径的叠加</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/modern-era/theory-track/quantum-field-theory.html" class="course-card"
+                            data-color="pink">
+                            <div class="card-icon">🌌</div>
+                            <h3 class="card-title">量子场论</h3>
+                            <p class="card-desc">场的量子化与粒子的产生消灭</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/modern-era/theory-track/feynman-diagrams.html" class="course-card"
+                            data-color="pink" data-interactive="true">
+                            <div class="card-icon">✏️</div>
+                            <h3 class="card-title">费曼图</h3>
+                            <p class="card-desc">粒子相互作用的可视化语言</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/modern-era/theory-track/standard-model.html" class="course-card"
+                            data-color="pink">
+                            <div class="card-icon">🔬</div>
+                            <h3 class="card-title">标准模型</h3>
+                            <p class="card-desc">统一描述基本粒子与相互作用的理论框架</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                    </div>
+
+                    <!-- 量子应用 -->
+                    <div class="track-column">
+                        <div class="track-title" style="--card-color: var(--color-green);">
+                            <span>🔬</span> 量子应用
+                        </div>
+                        <a href="pages/modern-era/app-track/quantum-tunneling.html" class="course-card"
+                            data-color="green" data-interactive="true">
+                            <div class="card-icon">🚇</div>
+                            <h3 class="card-title">量子隧穿</h3>
+                            <p class="card-desc">穿越经典禁区——核聚变与扫描隧道显微镜</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/modern-era/app-track/quantum-entanglement.html" class="course-card"
+                            data-color="green" data-interactive="true">
+                            <div class="card-icon">🔗</div>
+                            <h3 class="card-title">量子纠缠</h3>
+                            <p class="card-desc">超距作用的幽灵——贝尔不等式与量子通信</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                        <a href="pages/modern-era/app-track/quantum-computing.html" class="course-card"
+                            data-color="green" data-interactive="true">
+                            <div class="card-icon">💻</div>
+                            <h3 class="card-title">量子计算</h3>
+                            <p class="card-desc">Bloch球、量子门与未来的计算革命</p>
+                            <span class="card-link">开始学习 →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <span class="logo-icon">⚛</span>
+                        <span>量子探索之旅</span>
+                    </div>
+                    <p class="footer-text">
+                        交互式量子力学教学项目 | 让微观世界的奥秘变得直观有趣
+                    </p>
+                    <p class="footer-copyright">
+                        © 2026 Quantum Explorer. 探索量子世界的奇妙规律。
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- 管理员登录模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/quantum-bg.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

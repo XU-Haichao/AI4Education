@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="量子纠缠 - 超距作用的幽灵">
+    <title>量子纠缠 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">🔗</span>
+                <span class="nav-page-name">量子纠缠</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+	            <div class="demo-panel">
+	                <!-- 主演示区 -->
+	                <div class="demo-main-container">
+	                    <div class="entanglement-hud" aria-label="模拟参数">
+	                        <div class="demo-label">
+	                            <span>Δθ</span>
+	                            <span class="demo-value" id="angle-badge">0°</span>
+	                        </div>
+	                        <div class="demo-label">
+	                            <span>模式</span>
+	                            <span class="demo-value" id="mode-badge">纠缠</span>
+	                        </div>
+	                        <div class="demo-label">
+	                            <span>预期一致率</span>
+	                            <span class="demo-value" id="expected-badge">100%</span>
+	                        </div>
+	                    </div>
+	                    <div class="entanglement-canvas-wrap">
+	                        <canvas id="entanglement-canvas" class="demo-canvas"></canvas>
+	                    </div>
+	                </div>
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">同步硬币：只看“关联”</h3>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>系统</span>
+                        </div>
+                        <div class="preset-buttons" style="margin-top: var(--spacing-2);">
+                            <button class="preset-btn active" data-mode="entangled">纠缠（有关联）</button>
+                            <button class="preset-btn" data-mode="random">独立随机（无关联）</button>
+                        </div>
+                        <div class="control-hint">
+                            <span class="hint-muted">单看任何一方都像掷硬币；把两份记录对照，关联才“显形”。</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>测量角度差 Δθ</span>
+                            <span class="control-value" id="angle-value">0°</span>
+                        </div>
+                        <input type="range" id="angle-slider" min="0" max="90" value="0" step="1">
+                        <div class="control-hint">
+                            <span class="hint-muted">Δθ 越接近 0°，越同步；越接近 90°，越相反。</span>
+                        </div>
+                    </div>
+
+                    <div class="control-buttons" style="margin-top: var(--spacing-4);">
+                        <button class="control-btn" id="reset-btn">重置</button>
+                        <button class="control-btn" id="auto-btn">自动运行</button>
+                        <button class="control-btn primary" id="emit-btn">发射一对</button>
+                    </div>
+
+                    <div class="explanation-box">
+                        💡 小挑战：疯狂切换模式与 Δθ，看看 “Alice/Bob 的单边比例” 会不会改变？
+                    </div>
+                </div>
+
+                <!-- 结果面板 -->
+                <div class="result-panel">
+                    <h3 class="control-title">实时结果</h3>
+                    <div class="measurement-display">
+	                        <div class="particle-result" id="particle-a">
+	                            <div class="particle-label">Alice</div>
+	                            <div class="particle-state" id="state-a">?</div>
+	                            <div class="particle-location" id="marginal-a">单边：—</div>
+	                        </div>
+                        <div class="correlation-indicator" id="round-indicator">
+                            <span class="correlation-symbol" id="round-symbol">⟷</span>
+                            <span class="correlation-text" id="round-text">等待发射</span>
+                        </div>
+	                        <div class="particle-result" id="particle-b">
+	                            <div class="particle-label">Bob</div>
+	                            <div class="particle-state" id="state-b">?</div>
+	                            <div class="particle-location" id="marginal-b">单边：—</div>
+	                        </div>
+                    </div>
+	                    <div class="stats-panel">
+	                        <div class="stat-item">
+	                            <span class="stat-label">发射对数</span>
+	                            <span class="stat-value" id="pair-count">0</span>
+	                        </div>
+	                        <div class="stat-item">
+	                            <span class="stat-label">一致率</span>
+	                            <span class="stat-value" id="same-rate">-</span>
+	                        </div>
+	                        <div class="stat-item">
+	                            <span class="stat-label">预期一致率</span>
+	                            <span class="stat-value" id="expected-rate">-</span>
+	                        </div>
+	                        <div class="stat-item">
+	                            <span class="stat-label">Alice(1比例)</span>
+	                            <span class="stat-value" id="alice-one-rate">-</span>
+	                        </div>
+	                        <div class="stat-item">
+	                            <span class="stat-label">Bob(1比例)</span>
+	                            <span class="stat-value" id="bob-one-rate">-</span>
+	                        </div>
+	                    </div>
+	                    <div class="result-note">提示：无论 Δθ 怎么调，单看 Alice 或 Bob 都接近 50/50；只有把两份记录放在一起，关联才会出现。</div>
+	                </div>
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 学习内容</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content"></div>
+
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="quantum-tunneling.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">量子隧穿</div>
+                </div>
+            </a>
+            <a href="quantum-computing.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一节</div>
+                    <div class="page-nav-title">量子计算</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/modern-era/quantum-entanglement-simple.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('quantum-entanglement', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        .demo-main-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            height: clamp(260px, 38vh, 380px);
+        }
+
+        .entanglement-hud {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-2) var(--spacing-3);
+            padding: var(--spacing-3) var(--spacing-4);
+            background: rgba(0, 0, 0, 0.22);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .entanglement-canvas-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .measurement-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .particle-result {
+            flex: 1;
+            text-align: center;
+            padding: var(--spacing-3);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-lg);
+        }
+
+        .particle-label {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .particle-state {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .particle-state.bit0 {
+            color: var(--color-quantum-blue);
+        }
+
+        .particle-state.bit1 {
+            color: var(--color-quantum-pink);
+        }
+
+        .particle-location {
+            font-size: var(--text-xs);
+            color: var(--color-quantum-purple);
+            margin-top: var(--spacing-1);
+        }
+
+        .correlation-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 var(--spacing-2);
+        }
+
+        .correlation-symbol {
+            font-size: var(--text-2xl);
+            color: var(--color-quantum-purple);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .correlation-text {
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .stats-panel {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: var(--spacing-4);
+            padding-top: var(--spacing-3);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: var(--text-xs);
+            color: var(--color-text-muted);
+        }
+
+        .stat-value {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .explanation-box {
+            margin-top: var(--spacing-4);
+            padding: var(--spacing-3);
+            background: rgba(34, 197, 94, 0.10);
+            border: 1px solid rgba(34, 197, 94, 0.20);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            color: rgba(209, 250, 229, 0.95);
+            line-height: 1.7;
+        }
+
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        @media (max-width: 768px) {
+            .measurement-display {
+                flex-direction: column;
+            }
+
+            .correlation-indicator {
+                transform: none;
+            }
+
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

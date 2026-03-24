@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI for Education 交互式物理教学平台 - 量子力学、相对论、太阳系模拟、宇宙演化">
+    <title>AI for Education · 交互式物理教学平台</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ===== Reset & Base ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #030014;
+            --bg-card: rgba(15, 12, 41, 0.95);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --quantum-start: #06b6d4;
+            --quantum-end: #8b5cf6;
+            --relativity-start: #a78bfa;
+            --relativity-end: #ec4899;
+            --solar-start: #f59e0b;
+            --solar-end: #ef4444;
+            --cosmos-start: #3b82f6;
+            --cosmos-end: #06b6d4;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== Canvas Background ===== */
+        #stars-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== Main Layout ===== */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            text-align: center;
+            padding: 8rem 2rem 3rem;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1.2rem;
+            border-radius: 999px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: #93c5fd;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-badge .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6, #60a5fa);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease-in-out infinite;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero .scroll-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero .scroll-hint .arrow {
+            animation: bounce 2s ease-in-out infinite;
+            font-size: 1.2rem;
+        }
+
+        /* ===== Cards Section ===== */
+        .cards-section {
+            padding: 2rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-label {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .section-label h2 {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .section-label .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        /* ===== Card ===== */
+        .nav-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+            animation: fadeInUp 0.6s ease-out both;
+            cursor: pointer;
+        }
+
+        .nav-card:nth-child(1) {
+            animation-delay: 0.15s;
+        }
+
+        .nav-card:nth-child(2) {
+            animation-delay: 0.25s;
+        }
+
+        .nav-card:nth-child(3) {
+            animation-delay: 0.35s;
+        }
+
+        .nav-card:nth-child(4) {
+            animation-delay: 0.45s;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-card:hover .card-glow {
+            opacity: 0;
+        }
+
+        .nav-card:hover .card-icon {
+            transform: scale(1.15);
+        }
+
+        .nav-card:hover .card-arrow {
+            transform: translateX(4px);
+            opacity: 1;
+        }
+
+        .nav-card:hover .card-shine {
+            transform: translateX(100%);
+        }
+
+        /* Card glow */
+        .card-glow {
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        .card-glow::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 20px;
+            background: #0c0a24;
+        }
+
+        .nav-card[data-theme="quantum"] .card-glow {
+            background: linear-gradient(135deg, var(--quantum-start), var(--quantum-end));
+        }
+
+        .nav-card[data-theme="relativity"] .card-glow {
+            background: linear-gradient(135deg, var(--relativity-start), var(--relativity-end));
+        }
+
+        .nav-card[data-theme="solar"] .card-glow {
+            background: linear-gradient(135deg, var(--solar-start), var(--solar-end));
+        }
+
+        .nav-card[data-theme="cosmos"] .card-glow {
+            background: linear-gradient(135deg, var(--cosmos-start), var(--cosmos-end));
+        }
+
+        .nav-card:hover[data-theme="quantum"] {
+            box-shadow: 0 20px 60px -15px rgba(6, 182, 212, 0.25),
+                0 0 40px rgba(139, 92, 246, 0.1);
+        }
+
+        .nav-card:hover[data-theme="relativity"] {
+            box-shadow: 0 20px 60px -15px rgba(167, 139, 250, 0.25),
+                0 0 40px rgba(236, 72, 153, 0.1);
+        }
+
+        .nav-card:hover[data-theme="solar"] {
+            box-shadow: 0 20px 60px -15px rgba(245, 158, 11, 0.25),
+                0 0 40px rgba(239, 68, 68, 0.1);
+        }
+
+        .nav-card:hover[data-theme="cosmos"] {
+            box-shadow: 0 20px 60px -15px rgba(59, 130, 246, 0.25),
+                0 0 40px rgba(6, 182, 212, 0.1);
+        }
+
+        /* Card shine sweep */
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.03),
+                    transparent);
+            transition: transform 0.8s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Card header gradient strip */
+        .card-header {
+            height: 5px;
+            width: 100%;
+            position: relative;
+        }
+
+        .nav-card[data-theme="quantum"] .card-header {
+            background: linear-gradient(90deg, var(--quantum-start), var(--quantum-end));
+        }
+
+        .nav-card[data-theme="relativity"] .card-header {
+            background: linear-gradient(90deg, var(--relativity-start), var(--relativity-end));
+        }
+
+        .nav-card[data-theme="solar"] .card-header {
+            background: linear-gradient(90deg, var(--solar-start), var(--solar-end));
+        }
+
+        .nav-card[data-theme="cosmos"] .card-header {
+            background: linear-gradient(90deg, var(--cosmos-start), var(--cosmos-end));
+        }
+
+        /* Card body */
+        .card-body {
+            padding: 2.5rem 2rem 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+        }
+
+        .card-title {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+        }
+
+        .card-title-en {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            flex: 1;
+        }
+
+        /* Tags */
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Card footer */
+        .card-footer {
+            padding: 1.2rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-cta {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-card[data-theme="quantum"] .card-cta {
+            color: var(--quantum-start);
+        }
+
+        .nav-card[data-theme="relativity"] .card-cta {
+            color: var(--relativity-start);
+        }
+
+        .nav-card[data-theme="solar"] .card-cta {
+            color: var(--solar-start);
+        }
+
+        .nav-card[data-theme="cosmos"] .card-cta {
+            color: var(--cosmos-start);
+        }
+
+        .card-arrow {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0.6;
+            font-size: 1.1rem;
+        }
+
+        .card-status {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.8;
+        }
+
+        .footer .footer-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.5);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(6px);
+            }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 2rem;
+            }
+
+            .cards-section {
+                padding: 1.5rem 1.5rem 4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .card-body {
+                padding: 1.8rem 1.5rem 1.5rem;
+            }
+
+            .card-footer {
+                padding: 1rem 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Stars Background Canvas -->
+    <canvas id="stars-canvas"></canvas>
+
+    <div class="page-wrapper">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span class="pulse-dot"></span>
+                交互式物理教学平台
+            </div>
+            <h1>
+                探索 <span class="gradient-text">物理世界</span> 的奥秘
+            </h1>
+            <p class="subtitle">
+                通过精美的交互式可视化，从微观量子世界到宏观宇宙演化，<br>
+                让每一个物理概念都变得生动有趣
+            </p>
+            <div class="scroll-hint">
+                <span>向下探索四大课程</span>
+                <span class="arrow">↓</span>
+            </div>
+        </section>
+
+        <!-- Cards Section -->
+        <section class="cards-section" id="courses">
+            <div class="section-label">
+                <h2>选择你的探索之旅</h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Quantum Mechanics -->
+                <a href="quantum_new/index.html" class="nav-card" data-theme="quantum" id="card-quantum">
+                    <div class="card-glow"></div>
+                    <div class="card-shine"></div>
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="card-icon">⚛️</div>
+                        <div class="card-title">量子探索之旅</div>
+                        <div class="card-title-en">QUANTUM EXPLORER</div>
+                        <p class="card-desc">
+                            从经典物理的困境到现代量子应用——探索黑体辐射、光电效应、薛定谔方程、量子纠缠等核心概念，通过交互式模拟理解微观世界的神奇规律。
+                        </p>
+                        <div class="card-tags">
+                            <span class="card-tag">波粒二象性</span>
+                            <span class="card-tag">薛定谔方程</span>
+                            <span class="card-tag">量子纠缠</span>
+                            <span class="card-tag">费曼图</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-cta">
+                            进入探索
+                            <span class="card-arrow">→</span>
+                        </span>
+                        <span class="card-status">
+                            <span class="status-dot"></span>
+                            15+ 交互模块
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Relativity -->
+                <a href="relativity/index.html" class="nav-card" data-theme="relativity" id="card-relativity">
+                    <div class="card-glow"></div>
+                    <div class="card-shine"></div>
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="card-icon">✦</div>
+                        <div class="card-title">相对论探索之旅</div>
+                        <div class="card-title-en">RELATIVITY EXPLORER</div>
+                        <p class="card-desc">
+                            通过交互式可视化，直观理解爱因斯坦的时空理论——体验时间膨胀、长度收缩、时空弯曲、黑洞与引力波等令人震撼的物理现象。
+                        </p>
+                        <div class="card-tags">
+                            <span class="card-tag">狭义相对论</span>
+                            <span class="card-tag">广义相对论</span>
+                            <span class="card-tag">黑洞</span>
+                            <span class="card-tag">引力波</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-cta">
+                            进入探索
+                            <span class="card-arrow">→</span>
+                        </span>
+                        <span class="card-status">
+                            <span class="status-dot"></span>
+                            10+ 交互模块
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Solar System -->
+                <a href="solar_system/index.html" class="nav-card" data-theme="solar" id="card-solar">
+                    <div class="card-glow"></div>
+                    <div class="card-shine"></div>
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="card-icon">🪐</div>
+                        <div class="card-title">3D 星际模拟</div>
+                        <div class="card-title-en">STELLAR NAVIGATION SYSTEM</div>
+                        <p class="card-desc">
+                            基于 Three.js 构建的 3D 星际导航系统——在浏览器中探索太阳系及邻近恒星系统，缩放、旋转并聚焦每一颗天体，感受宇宙的浩瀚壮美。
+                        </p>
+                        <div class="card-tags">
+                            <span class="card-tag">3D 模拟</span>
+                            <span class="card-tag">太阳系</span>
+                            <span class="card-tag">邻近恒星</span>
+                            <span class="card-tag">交互导航</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-cta">
+                            进入探索
+                            <span class="card-arrow">→</span>
+                        </span>
+                        <span class="card-status">
+                            <span class="status-dot"></span>
+                            6 大星系
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Universe Evolution -->
+                <a href="universe_evolution/index.html" class="nav-card" data-theme="cosmos" id="card-cosmos">
+                    <div class="card-glow"></div>
+                    <div class="card-shine"></div>
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="card-icon">🌌</div>
+                        <div class="card-title">COSMOS 宇宙演化史</div>
+                        <div class="card-title-en">COSMOS · UNIVERSE EVOLUTION</div>
+                        <p class="card-desc">
+                            从大爆炸到今天——拖动时间轴穿越 138 亿年的宇宙历史，见证暴胀、核合成、宇宙微波背景辐射、第一颗恒星的诞生与星系的形成演化。
+                        </p>
+                        <div class="card-tags">
+                            <span class="card-tag">大爆炸</span>
+                            <span class="card-tag">时间轴</span>
+                            <span class="card-tag">3D 可视化</span>
+                            <span class="card-tag">138亿年</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-cta">
+                            进入探索
+                            <span class="card-arrow">→</span>
+                        </span>
+                        <span class="card-status">
+                            <span class="status-dot"></span>
+                            全时间线
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">AI for Education</div>
+            <p>
+                交互式物理教学平台 · 让每一个物理概念变得直观有趣<br>
+                © 2026 AI for Education. All rights reserved.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // ===== Starfield Background =====
+        (function () {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height, stars = [], shootingStars = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            function createStars(count) {
+                stars = [];
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        r: Math.random() * 1.5 + 0.3,
+                        alpha: Math.random() * 0.8 + 0.2,
+                        speed: Math.random() * 0.0008 + 0.0002,
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+
+            function createShootingStar() {
+                if (Math.random() > 0.003) return;
+                shootingStars.push({
+                    x: Math.random() * width * 0.8,
+                    y: Math.random() * height * 0.5,
+                    len: Math.random() * 80 + 40,
+                    speed: Math.random() * 8 + 6,
+                    alpha: 1,
+                    angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3
+                });
+            }
+
+            function drawNebula() {
+                // Soft nebula glow
+                const g1 = ctx.createRadialGradient(width * 0.2, height * 0.3, 0, width * 0.2, height * 0.3, width * 0.4);
+                g1.addColorStop(0, 'rgba(59, 130, 246, 0.025)');
+                g1.addColorStop(1, 'transparent');
+                ctx.fillStyle = g1;
+                ctx.fillRect(0, 0, width, height);
+
+                const g2 = ctx.createRadialGradient(width * 0.8, height * 0.7, 0, width * 0.8, height * 0.7, width * 0.35);
+                g2.addColorStop(0, 'rgba(139, 92, 246, 0.02)');
+                g2.addColorStop(1, 'transparent');
+                ctx.fillStyle = g2;
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            let time = 0;
+            function animate() {
+                time += 1;
+                ctx.clearRect(0, 0, width, height);
+
+                drawNebula();
+
+                // Draw stars
+                for (const s of stars) {
+                    const twinkle = Math.sin(time * s.speed * 60 + s.phase) * 0.3 + 0.7;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(220, 230, 255, ${s.alpha * twinkle})`;
+                    ctx.fill();
+                }
+
+                // Shooting stars
+                createShootingStar();
+                for (let i = shootingStars.length - 1; i >= 0; i--) {
+                    const ss = shootingStars[i];
+                    const dx = Math.cos(ss.angle) * ss.speed;
+                    const dy = Math.sin(ss.angle) * ss.speed;
+                    ss.x += dx;
+                    ss.y += dy;
+                    ss.alpha -= 0.012;
+
+                    if (ss.alpha <= 0) {
+                        shootingStars.splice(i, 1);
+                        continue;
+                    }
+
+                    const tailX = ss.x - Math.cos(ss.angle) * ss.len;
+                    const tailY = ss.y - Math.sin(ss.angle) * ss.len;
+
+                    const grad = ctx.createLinearGradient(ss.x, ss.y, tailX, tailY);
+                    grad.addColorStop(0, `rgba(255, 255, 255, ${ss.alpha})`);
+                    grad.addColorStop(1, `rgba(255, 255, 255, 0)`);
+
+                    ctx.beginPath();
+                    ctx.moveTo(ss.x, ss.y);
+                    ctx.lineTo(tailX, tailY);
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                createStars(Math.min(300, Math.floor(width * height / 5000)));
+            });
+
+            resize();
+            createStars(Math.min(300, Math.floor(width * height / 5000)));
+            animate();
+        })();
+
+        // ===== Card hover tilt effect =====
+        document.querySelectorAll('.nav-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / centerY * -4;
+                const rotateY = (x - centerX) / centerX * 4;
+
+                card.style.transform = `translateY(-8px) scale(1.02) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    </script>
+</body>
+
+</html>

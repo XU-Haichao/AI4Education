@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="汤姆孙原子模型 - 阴极射线实验与葡萄干布丁模型">
+    <title>汤姆孙模型 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">🧪</span>
+                <span class="nav-page-name">汤姆孙模型</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+            <div class="demo-panel">
+                <!-- 双屏展示区 -->
+                <div class="demo-split-container">
+                    <!-- 左侧：阴极射线实验 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">阴极射线实验</div>
+                        <canvas id="cathode-ray-canvas" class="demo-canvas"></canvas>
+                    </div>
+
+                    <!-- 右侧：葡萄干布丁模型 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">葡萄干布丁模型</div>
+                        <canvas id="plum-pudding-canvas" class="demo-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">控制台</h3>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>偏转板电压 V<sub>d</sub></span>
+                            <span class="control-value" id="vd-value">0.0 V</span>
+                        </div>
+                        <input type="range" id="vd-slider" min="-75" max="75" value="0" step="0.1">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>磁场 B</span>
+                            <span class="control-value" id="b-value">0.00 mT</span>
+                        </div>
+                        <input type="range" id="b-slider" min="-0.56" max="0.56" value="0" step="0.01">
+                    </div>
+
+                    <div class="control-row">
+                        <label class="toggle">
+                            <input type="checkbox" id="e-enabled" checked>
+                            <span>电场 ON</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="b-enabled" checked>
+                            <span>磁场 ON</span>
+                        </label>
+                    </div>
+
+                    <div class="control-buttons">
+                        <button class="control-btn" id="reset-btn">重置/清屏</button>
+                        <button class="control-btn" id="balance-btn">平衡归零</button>
+                    </div>
+                </div>
+
+                <!-- 结果面板 -->
+                <div class="result-panel">
+                    <h3 class="control-title">测量结果</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">电子速度 v</div>
+                            <div class="result-value" id="v-result">5.93</div>
+                            <span class="result-unit">×10⁶ m/s</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">屏幕偏转 Δy</div>
+                            <div class="result-value" id="deflection-value">0.0</div>
+                            <span class="result-unit">mm</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">电场 E</div>
+                            <div class="result-value" id="e-result">0</div>
+                            <span class="result-unit">V/m</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">磁场 B</div>
+                            <div class="result-value" id="b-result">0.00</div>
+                            <span class="result-unit">mT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 学习内容</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content">
+                    <!-- 内容将由 JS 渲染 -->
+                </div>
+
+                <!-- 物理学家介绍 -->
+                <div class="physicist-card">
+                    <img src="../../../assets/images/thomson.png" alt="J.J. 汤姆孙" class="physicist-image">
+                    <div class="physicist-info">
+                        <h4>约瑟夫·约翰·汤姆孙</h4>
+                        <p>Joseph John Thomson (1856-1940)</p>
+                        <p class="physicist-desc">英国物理学家，1897年发现电子，1906年获诺贝尔物理学奖。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="../../../index.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">返回</div>
+                    <div class="page-nav-title">主页</div>
+                </div>
+            </a>
+            <a href="rutherford-scattering.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一节</div>
+                    <div class="page-nav-title">卢瑟福散射</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/early-era/thomson-model.js"></script>
+    <script>
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 加载文档内容
+            loadPageContent('thomson-model', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        /* 物理学家卡片样式 */
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .physicist-desc {
+            margin-top: var(--spacing-2);
+        }
+
+        @media (max-width: 768px) {
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

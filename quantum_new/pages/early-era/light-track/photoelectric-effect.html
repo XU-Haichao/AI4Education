@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="光电效应 - 爱因斯坦的光量子假说">
+    <title>光电效应 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">💡</span>
+                <span class="nav-page-name">光电效应</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+            <div class="demo-panel">
+                <!-- 双屏展示区 -->
+                <div class="demo-split-container">
+                    <!-- 左侧：光电效应实验 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">光电效应实验装置</div>
+                        <canvas id="photoelectric-canvas" class="demo-canvas"></canvas>
+                    </div>
+
+                    <!-- 右侧：动能-频率曲线 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">光电子最大动能与频率关系</div>
+                        <canvas id="energy-plot-canvas" class="demo-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">光源控制</h3>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>光子频率 ν</span>
+                            <span class="control-value" id="freq-value">6.0 ×10¹⁴ Hz</span>
+                        </div>
+                        <input type="range" id="freq-slider" min="3" max="12" value="6" step="0.1">
+                        <div class="wavelength-bar" id="wavelength-bar"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>光强 I</span>
+                            <span class="control-value" id="intensity-value">中等</span>
+                        </div>
+                        <input type="range" id="intensity-slider" min="1" max="5" value="3" step="1">
+                    </div>
+
+                    <div class="preset-buttons">
+                        <span style="color: var(--color-text-secondary); font-size: var(--text-sm);">金属材料：</span>
+                        <button class="preset-btn" data-metal="cs">铯 (Cs)</button>
+                        <button class="preset-btn" data-metal="na">钠 (Na)</button>
+                        <button class="preset-btn active" data-metal="zn">锌 (Zn)</button>
+                        <button class="preset-btn" data-metal="cu">铜 (Cu)</button>
+                    </div>
+
+                    <div class="control-buttons" style="margin-top: var(--spacing-4);">
+                        <button class="control-btn" id="reset-btn">重置</button>
+                        <button class="control-btn primary" id="emit-btn">照射光束</button>
+                    </div>
+                </div>
+
+                <!-- 结果面板 -->
+                <div class="result-panel">
+                    <h3 class="control-title">测量结果</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">光子能量 E<sub>光</sub></div>
+                            <div class="result-value" id="photon-energy">2.48</div>
+                            <span class="result-unit">eV</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">逸出功 W</div>
+                            <div class="result-value" id="work-function">4.3</div>
+                            <span class="result-unit">eV</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">电子动能 E<sub>k</sub></div>
+                            <div class="result-value" id="kinetic-energy">0</div>
+                            <span class="result-unit">eV</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">状态</div>
+                            <div class="result-value" id="effect-status" style="font-size: var(--text-lg);">无效应</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 学习内容</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content">
+                    <!-- 内容将由 JS 渲染 -->
+                </div>
+
+                <!-- 物理学家介绍 -->
+                <div class="physicist-card">
+                    <img src="../../../assets/images/einstein.png" alt="阿尔伯特·爱因斯坦" class="physicist-image">
+                    <div class="physicist-info">
+                        <h4>阿尔伯特·爱因斯坦</h4>
+                        <p>Albert Einstein (1879-1955)</p>
+                        <p class="physicist-desc">德裔美国物理学家，因解释光电效应获1921年诺贝尔物理学奖。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="blackbody-radiation.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">黑体辐射</div>
+                </div>
+            </a>
+            <a href="compton-scattering.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一节</div>
+                    <div class="page-nav-title">康普顿散射</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/early-era/photoelectric-effect.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('photoelectric-effect', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        /* 波长颜色条 */
+        .wavelength-bar {
+            height: 8px;
+            border-radius: var(--radius-full);
+            margin-top: var(--spacing-2);
+            background: linear-gradient(to right,
+                    /* 250nm -> 1000nm */
+                    #7c3aed 0%,
+                    /* UV (<=380nm) */
+                    #7c3aed 17.33%,
+                    #3b82f6 26.67%,
+                    /* 蓝 ~450nm */
+                    #06b6d4 32.67%,
+                    /* 青 ~495nm */
+                    #22c55e 42.67%,
+                    /* 绿 ~570nm */
+                    #eab308 45.33%,
+                    /* 黄 ~590nm */
+                    #f97316 49.33%,
+                    /* 橙 ~620nm */
+                    #ef4444 66.67%,
+                    /* 红 ~750nm */
+                    #991b1b 100%
+                    /* IR (>750nm) */
+                );
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* UV 区域标注（按 250nm~1000nm 线性比例，250~380nm 占约 17.33%） */
+        .wavelength-bar::before {
+            content: 'UV';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 17.33%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(124, 58, 237, 0.18);
+            border-right: 1px solid rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+        }
+
+        .wavelength-bar::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 16px;
+            background: white;
+            border-radius: 2px;
+            top: -4px;
+            left: var(--indicator-pos, 50%);
+            transform: translateX(-50%);
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.55);
+            transition: left var(--transition-fast);
+        }
+
+        /* 物理学家卡片样式 */
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .physicist-desc {
+            margin-top: var(--spacing-2);
+        }
+
+        @media (max-width: 768px) {
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

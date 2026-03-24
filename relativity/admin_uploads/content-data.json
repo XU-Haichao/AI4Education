@@ -1,0 +1,28 @@
+{
+  "updatedAt": "2026-02-07T07:47:57.981Z",
+  "pages": {
+    "gravitational-waves": {
+      "content": "",
+      "media": {
+        "links": [],
+        "images": [
+          {
+            "name": "浙江大学天文研究所刘彬",
+            "url": "/admin_uploads/files/gravitational-waves/images/1770450476433-w88tju-Liubin.png",
+            "thumbnail": "/admin_uploads/files/gravitational-waves/images/1770450476433-w88tju-Liubin.png",
+            "id": 1770450476725
+          }
+        ],
+        "videos": [],
+        "documents": [
+          {
+            "name": "利用双黑洞引力波探测超大质量黑洞自旋",
+            "url": "/admin_uploads/files/gravitational-waves/documents/1770450407776-gh55jg-Liu_2022_ApJ_924_127.pdf",
+            "type": "pdf",
+            "id": 1770450408577
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="探索爱因斯坦的相对论世界 - 通过交互式可视化学习狭义相对论和广义相对论">
+    <title>相对论探索之旅 | Relativity Explorer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- KaTeX for Math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+    <!-- 星空背景 -->
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">相对论探索</span>
+            </a>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主页内容 -->
+    <main class="home-main">
+        <!-- Hero 区域 -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line">探索</span>
+                    <span class="title-line gradient-text">相对论</span>
+                    <span class="title-line">的奇妙世界</span>
+                </h1>
+                <p class="hero-subtitle">
+                    通过交互式可视化，直观理解爱因斯坦的时空理论
+                </p>
+                <div class="hero-buttons">
+                    <a href="pages/special-relativity/speed-of-light.html" class="btn btn-primary">
+                        <span>开始学习狭义相对论</span>
+                        <span class="btn-arrow">→</span>
+                    </a>
+                    <a href="pages/general-relativity/equivalence.html" class="btn btn-secondary">
+                        <span>探索广义相对论</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 装饰性元素 -->
+            <div class="hero-decoration">
+                <div class="orbit orbit-1"></div>
+                <div class="orbit orbit-2"></div>
+                <div class="orbit orbit-3"></div>
+                <div class="planet planet-1"></div>
+                <div class="planet planet-2"></div>
+            </div>
+        </section>
+
+        <!-- 课程介绍区域 -->
+        <section class="intro-section">
+            <div class="container">
+                <h2 class="section-title">什么是相对论？</h2>
+                <div class="intro-content" id="home-intro-content">
+                    <p>
+                        相对论是阿尔伯特·爱因斯坦在20世纪初提出的革命性物理理论，彻底改变了我们对时间、空间、物质和能量的理解。
+                    </p>
+                    <p>
+                        <strong>狭义相对论</strong>（1905年）揭示了高速运动时时间和空间的奇妙变化，以及著名的质能方程 E=mc²。
+                    </p>
+                    <p>
+                        <strong>广义相对论</strong>（1915年）则将引力重新诠释为时空的弯曲，预言了黑洞、引力波等现象。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 狭义相对论课程卡片 -->
+        <section class="courses-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">狭义相对论</h2>
+                    <p class="section-desc">探索高速世界中时间与空间的奇妙联系</p>
+                </div>
+
+                <div class="cards-grid">
+                    <a href="pages/special-relativity/speed-of-light.html" class="course-card" data-color="blue">
+                        <div class="card-icon">💡</div>
+                        <h3 class="card-title">光速不变原理</h3>
+                        <p class="card-desc">无论观察者如何运动，光速始终保持不变——这一反直觉的事实是相对论的基石。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/special-relativity/time-dilation.html" class="course-card" data-color="purple">
+                        <div class="card-icon">⏱️</div>
+                        <h3 class="card-title">时间膨胀</h3>
+                        <p class="card-desc">运动的时钟走得更慢！探索速度如何影响时间的流逝。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/special-relativity/length-contraction.html" class="course-card" data-color="cyan">
+                        <div class="card-icon">📏</div>
+                        <h3 class="card-title">长度收缩</h3>
+                        <p class="card-desc">高速运动的物体在运动方向上会变短，亲自体验这一神奇效应。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/special-relativity/mass-energy.html" class="course-card" data-color="amber">
+                        <div class="card-icon">⚡</div>
+                        <h3 class="card-title">质能方程</h3>
+                        <p class="card-desc">E=mc² — 物理学中最著名的方程，揭示质量与能量的深层联系。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/special-relativity/twin-paradox.html" class="course-card" data-color="pink">
+                        <div class="card-icon">👥</div>
+                        <h3 class="card-title">双生子佯谬</h3>
+                        <p class="card-desc">一对双胞胎，一个留在地球，一个高速旅行——谁会更年轻？</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 广义相对论课程卡片 -->
+        <section class="courses-section courses-section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">广义相对论</h2>
+                    <p class="section-desc">理解引力如何弯曲时空的结构</p>
+                </div>
+
+                <div class="cards-grid">
+                    <a href="pages/general-relativity/equivalence.html" class="course-card" data-color="green">
+                        <div class="card-icon">⚖️</div>
+                        <h3 class="card-title">等效原理</h3>
+                        <p class="card-desc">在加速的电梯中和在引力场中，你能分辨出区别吗？</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/general-relativity/spacetime-curvature.html" class="course-card" data-color="indigo">
+                        <div class="card-icon">🌀</div>
+                        <h3 class="card-title">时空弯曲</h3>
+                        <p class="card-desc">质量告诉时空如何弯曲，时空告诉质量如何运动。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/general-relativity/gravitational-lensing.html" class="course-card" data-color="teal">
+                        <div class="card-icon">🔭</div>
+                        <h3 class="card-title">引力透镜</h3>
+                        <p class="card-desc">光线在大质量天体附近弯曲，形成宇宙中的天然放大镜。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/general-relativity/black-holes.html" class="course-card" data-color="red">
+                        <div class="card-icon">🕳️</div>
+                        <h3 class="card-title">黑洞</h3>
+                        <p class="card-desc">连光都无法逃脱的神秘天体，时空弯曲的极致体现。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+
+                    <a href="pages/general-relativity/gravitational-waves.html" class="course-card" data-color="orange">
+                        <div class="card-icon">🌊</div>
+                        <h3 class="card-title">引力波</h3>
+                        <p class="card-desc">时空的涟漪，宇宙的低语——感受引力波的震撼。</p>
+                        <span class="card-link">开始学习 →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <span class="logo-icon">✦</span>
+                        <span>相对论探索之旅</span>
+                    </div>
+                    <p class="footer-text">
+                        交互式物理教学项目 | 让复杂的物理变得直观有趣
+                    </p>
+                    <p class="footer-copyright">
+                        © 2026 Relativity Explorer. 基于爱因斯坦的伟大理论。
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- 管理员登录模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/stars.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/nav-menu.js"></script>
+</body>
+
+</html>

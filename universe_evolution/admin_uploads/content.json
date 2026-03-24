@@ -1,0 +1,27 @@
+{
+  "matter-creation::43-50::光子退耦（CMB）": {
+    "text": "当散射变得稀少，光子开始在宇宙中自由传播，形成我们今天观测到的宇宙微波背景（CMB）。",
+    "attachments": [
+      {
+        "id": "1770384401514_36j7v1",
+        "type": "link",
+        "title": "sDBI宇宙学模型是否可能解决S8tension?",
+        "url": "https://arxiv.org/abs/2307.04394",
+        "createdAt": "2026-02-06T13:26:41.514Z"
+      }
+    ]
+  },
+  "matter-creation::30-35::太初核合成": {
+    "text": "质子与中子结合形成氘、氦以及少量锂，奠定了宇宙中轻元素的丰度；更重元素主要在恒星内部产生。",
+    "attachments": [
+      {
+        "id": "1770384500000_gamow",
+        "type": "image",
+        "fileName": "George_Gamow.jpg",
+        "mimeType": "image/jpeg",
+        "relativePath": "admin_uploads/images/George_Gamow.jpg",
+        "createdAt": "2026-03-24T03:52:00.000Z"
+      }
+    ]
+  }
+}

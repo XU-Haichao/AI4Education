@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="康普顿散射 - 光子与电子的碰撞证明光的粒子性">
+    <title>康普顿散射 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">💥</span>
+                <span class="nav-page-name">康普顿散射</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+            <div class="demo-panel">
+                <!-- 双屏展示区 -->
+                <div class="demo-split-container">
+                    <!-- 左侧：碰撞模拟 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">实验模拟视图</div>
+                        <canvas id="collision-canvas" class="demo-canvas"></canvas>
+                    </div>
+
+                    <!-- 右侧：波长偏移图 -->
+                    <div class="demo-split-panel">
+                        <div class="demo-split-title">能量分布分析</div>
+                        <canvas id="wavelength-canvas" class="demo-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">实验控制</h3>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>散射角度 θ</span>
+                            <span class="control-value" id="angle-value">90°</span>
+                        </div>
+                        <input type="range" id="angle-slider" min="0" max="180" value="90" step="1">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>入射能量 E</span>
+                            <span class="control-value" id="energy-value">50 keV</span>
+                        </div>
+                        <input type="range" id="energy-slider" min="10" max="500" value="50" step="10">
+                    </div>
+
+                    <div class="control-buttons" style="margin-top: var(--spacing-4);">
+                        <!-- 使用标准的 control-btn 样式 -->
+                        <button class="control-btn primary" id="scatter-btn">发射光子</button>
+                    </div>
+                </div>
+
+                <!-- 结果面板 -->
+                <div class="result-panel">
+                    <h3 class="control-title">实时数据</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">入射波长 λ</div>
+                            <div class="result-value" id="incident-wavelength">24.8</div>
+                            <span class="result-unit">pm</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">散射波长 λ'</div>
+                            <div class="result-value" id="scattered-wavelength">27.2</div>
+                            <span class="result-unit">pm</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">波长偏移 Δλ</div>
+                            <div class="result-value" id="wavelength-shift">2.43</div>
+                            <span class="result-unit">pm</span>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">电子能量 Ee</div>
+                            <div class="result-value" id="electron-energy">4.5</div>
+                            <span class="result-unit">keV</span>
+                        </div>
+                    </div>
+                    <!-- 状态指示器辅助 -->
+                    <div style="text-align: right; margin-top: 10px; font-size: 0.8rem; color: #666;">
+                        <span id="status-indicator">就绪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 现象原理</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content">
+                    <!-- 内容将由 JS 渲染 -->
+                </div>
+
+                <!-- 物理学家介绍 -->
+                <div class="physicist-card">
+                    <img src="../../../assets/images/compton.png" alt="Arthur Compton" class="physicist-image">
+                    <div class="physicist-info">
+                        <h4>阿瑟·康普顿</h4>
+                        <p>Arthur Compton (1892-1962)</p>
+                        <p class="physicist-desc">美国物理学家，因发现康普顿效应获1927年诺贝尔物理学奖。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="photoelectric-effect.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">光电效应</div>
+                </div>
+            </a>
+            <a href="../../middle-era/de-broglie-wave.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">下一阶段</div>
+                    <div class="page-nav-title">德布罗意波</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/early-era/compton-scattering.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('compton-scattering', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        /* 物理学家卡片样式 */
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .physicist-desc {
+            margin-top: var(--spacing-2);
+        }
+
+        @media (max-width: 768px) {
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

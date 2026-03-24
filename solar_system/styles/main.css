@@ -1,0 +1,406 @@
+body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Microsoft YaHei', sans-serif; }
+canvas { display: block; }
+
+/* UI 覆盖层 */
+#ui-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    z-index: 10;
+    background: rgba(0, 20, 40, 0.7);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 200, 255, 0.3);
+    backdrop-filter: blur(5px);
+    max-height: 90vh;
+    overflow: hidden;
+    width: 260px;
+    max-width: calc(100vw - 40px);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+h1 { margin: 0 0 10px 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; color: #00d2ff; }
+p { margin: 5px 0; font-size: 0.9rem; color: #aaa; }
+
+.ui-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.ui-header h1 { margin: 0; }
+.ui-toggle {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    text-align: center;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+.ui-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+#ui-container.collapsed {
+    width: auto;
+    max-height: none;
+    padding: 10px 12px;
+}
+#ui-container.collapsed .ui-header { margin-bottom: 0; }
+#ui-container.collapsed .ui-body { display: none; }
+
+@media (max-width: 768px), (max-height: 640px) {
+    #ui-container {
+        top: 10px;
+        left: 10px;
+        max-width: calc(100vw - 20px);
+    }
+}
+
+.btn-group { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+button {
+    background: rgba(0, 200, 255, 0.1);
+    border: 1px solid #00d2ff;
+    color: #00d2ff;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    text-align: left;
+}
+button:hover { background: #00d2ff; color: #000; }
+
+/* 管理员按钮 */
+#admin-btn {
+    margin-top: 15px;
+    border: 1px dashed #666;
+    color: #888;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 5px;
+}
+#admin-btn:hover { border-color: #00d2ff; color: #00d2ff; }
+
+/* 速度控制滑条样式 */
+.control-group {
+    margin-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 10px;
+}
+.control-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #00d2ff;
+    margin-bottom: 5px;
+}
+input[type=range] {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* 行星标签样式 */
+.planet-label {
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    pointer-events: auto;
+    cursor: pointer;
+    text-shadow: 0 0 4px #000;
+    background: rgba(0,0,0,0.5);
+    padding: 2px 6px;
+    border-radius: 4px;
+    transform: translate(-50%, -150%);
+    white-space: nowrap;
+    text-align: center;
+    opacity: 0.8;
+    transition: all 0.2s;
+    user-select: none;
+}
+.planet-label:hover {
+    transform: translate(-50%, -150%) scale(1.2);
+    background: rgba(0, 100, 200, 0.7);
+    z-index: 100;
+    opacity: 1 !important;
+}
+
+.star-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffeb3b;
+    background: none;
+    text-shadow: 0 0 10px #000;
+    pointer-events: auto;
+    cursor: pointer;
+}
+.star-label:hover {
+    transform: translate(-50%, -150%) scale(1.1);
+    color: #fff;
+}
+
+/* 轨道半径标签样式 */
+.orbit-label {
+    position: absolute;
+    color: #88aaff;
+    font-size: 10px;
+    pointer-events: none;
+    text-shadow: 0 0 2px #000;
+    opacity: 0.6;
+    transform: translate(-50%, -50%);
+    font-family: 'Consolas', monospace;
+}
+/* 质心标签样式 */
+.barycenter-label {
+    position: absolute;
+    color: #00ff00;
+    font-size: 10px;
+    pointer-events: none;
+    text-shadow: 0 0 2px #000;
+    opacity: 0.8;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    background: rgba(0, 20, 0, 0.5);
+    padding: 1px 3px;
+    border-radius: 2px;
+}
+/* 系统总标签样式 */
+.system-label {
+    position: absolute;
+    color: #ffcc00;
+    font-size: 14px;
+    font-weight: bold;
+    pointer-events: auto;
+    cursor: pointer;
+    text-shadow: 0 0 5px #000;
+    transform: translate(-50%, -150%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 204, 0, 0.6);
+    border-radius: 4px;
+    z-index: 5;
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+.system-label:hover {
+    transform: translate(-50%, -150%) scale(1.1);
+    background: rgba(50, 50, 0, 0.9);
+    border-color: #ffeb3b;
+    z-index: 101;
+}
+.system-sub {
+    display: block;
+    font-size: 11px;
+    color: #bbb;
+    font-weight: normal;
+    margin-top: 2px;
+}
+
+#loading {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #00d2ff;
+    font-size: 24px;
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.5s;
+}
+
+/* --- 信息弹窗与模糊遮罩 --- */
+#blur-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+#info-modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 500px;
+    max-width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: rgba(12, 25, 40, 0.9);
+    border: 1px solid #00d2ff;
+    box-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
+    color: #eee;
+    padding: 25px;
+    border-radius: 12px;
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+#info-modal.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+#info-modal h2 {
+    margin-top: 0;
+    color: #00d2ff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#info-modal .content {
+    margin: 20px 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+#info-modal .close-btn {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+    line-height: 1;
+}
+#info-modal .close-btn:hover { color: #fff; }
+
+/* --- 登录弹窗 --- */
+#login-modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 20, 40, 0.95);
+    border: 1px solid #00d2ff;
+    padding: 30px;
+    z-index: 1100;
+    border-radius: 10px;
+    text-align: center;
+    display: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+#login-modal input {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid #444;
+    color: white;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 4px;
+    width: 200px;
+}
+#login-modal button {
+    width: 100%;
+    background: #00d2ff;
+    color: #000;
+    font-weight: bold;
+}
+
+/* --- 编辑器样式 --- */
+.edit-mode textarea {
+    width: 100%;
+    height: 150px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #444;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    resize: vertical;
+}
+.drop-zone {
+    border: 2px dashed #444;
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    margin: 10px 0;
+    border-radius: 6px;
+    transition: all 0.3s;
+    background: rgba(0,0,0,0.2);
+}
+.drop-zone.dragover {
+    border-color: #00d2ff;
+    background: rgba(0, 210, 255, 0.1);
+    color: #fff;
+}
+.media-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+.media-item {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+.document-item {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background: rgba(0,0,0,0.4);
+    color: #00d2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    text-align: center;
+    padding: 6px;
+    text-decoration: none;
+}
+.document-item:hover {
+    background: rgba(0, 100, 200, 0.4);
+    color: #fff;
+}
+.audio-item {
+    width: 100%;
+    max-width: 180px;
+}
+.link-input-group {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.link-input-group input {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #444;
+    color: white;
+    padding: 5px;
+    flex: 1;
+    border-radius: 4px;
+}
+.admin-badge {
+    background: #ff3300;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.view-media img, .view-media video {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px solid #333;
+}
+.view-links a {
+    display: block;
+    color: #00d2ff;
+    text-decoration: none;
+    margin: 5px 0;
+}
+.view-links a:hover { text-decoration: underline; }

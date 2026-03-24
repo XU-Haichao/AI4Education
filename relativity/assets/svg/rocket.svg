@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 50" width="120" height="50">
+  <defs>
+    <!-- 火箭主体渐变 -->
+    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a5b4fc"/>
+      <stop offset="30%" style="stop-color:#6366f1"/>
+      <stop offset="70%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#3730a3"/>
+    </linearGradient>
+    <!-- 驾驶舱渐变 -->
+    <linearGradient id="cockpitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#67e8f9"/>
+      <stop offset="50%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#0891b2"/>
+    </linearGradient>
+    <!-- 金属高光 -->
+    <linearGradient id="highlightGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.4)"/>
+      <stop offset="50%" style="stop-color:rgba(255,255,255,0.1)"/>
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+    </linearGradient>
+    <!-- 火焰渐变 -->
+    <radialGradient id="flameGradient" cx="100%" cy="50%" r="100%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="40%" style="stop-color:#f59e0b"/>
+      <stop offset="70%" style="stop-color:#ea580c"/>
+      <stop offset="100%" style="stop-color:transparent"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- 引擎火焰 -->
+  <ellipse cx="8" cy="25" rx="12" ry="8" fill="url(#flameGradient)" opacity="0.9"/>
+  
+  <!-- 火箭尾翼 - 上 -->
+  <path d="M20,10 L30,18 L20,20 Z" fill="#4f46e5" stroke="#3730a3" stroke-width="0.5"/>
+  <!-- 火箭尾翼 - 下 -->
+  <path d="M20,40 L30,32 L20,30 Z" fill="#4f46e5" stroke="#3730a3" stroke-width="0.5"/>
+  
+  <!-- 火箭主体 -->
+  <path d="M25,15 L95,18 Q115,25 95,32 L25,35 Q15,25 25,15 Z" fill="url(#bodyGradient)" stroke="#3730a3" stroke-width="1"/>
+  
+  <!-- 主体高光 -->
+  <path d="M25,15 L95,18 Q115,25 95,25 L25,25 Q15,20 25,15 Z" fill="url(#highlightGradient)"/>
+  
+  <!-- 驾驶舱窗户 -->
+  <ellipse cx="78" cy="25" rx="12" ry="7" fill="url(#cockpitGradient)" stroke="#0e7490" stroke-width="1"/>
+  
+  <!-- 窗户反光 -->
+  <ellipse cx="75" cy="23" rx="4" ry="2.5" fill="rgba(255,255,255,0.4)"/>
+  
+  <!-- 火箭头部高光线 -->
+  <path d="M95,20 Q108,25 95,30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  
+  <!-- 引擎接口 -->
+  <rect x="18" y="20" width="8" height="10" rx="1" fill="#1e1b4b" stroke="#3730a3" stroke-width="0.5"/>
+  
+  <!-- 装饰条纹 -->
+  <line x1="45" y1="18" x2="45" y2="32" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <line x1="60" y1="17" x2="60" y2="33" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+</svg>

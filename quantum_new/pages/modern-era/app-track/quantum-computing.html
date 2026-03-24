@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="量子计算 - 单量子比特、布洛赫球与量子门（直观交互）">
+    <title>量子计算 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">💻</span>
+                <span class="nav-page-name">量子计算</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container">
+            <!-- 演示面板 -->
+            <div class="demo-panel">
+                <!-- 布洛赫球 + 读数（左右布局） -->
+                <div class="bloch-split">
+                    <div class="bloch-canvas-card">
+                        <canvas id="bloch-canvas" class="demo-canvas"></canvas>
+                        <div class="canvas-hint">拖动球面设置态（Shift 选择背面）</div>
+                    </div>
+
+                    <div class="bloch-info-card">
+                        <div class="hud-header">
+                            <div class="hud-title">测量（Z 基）</div>
+                            <div class="hud-sub" id="ket-badge">θ=60°，φ=0°</div>
+                        </div>
+
+                        <div class="prob-panel">
+                            <div class="prob-row">
+                                <div class="prob-label">P(0)</div>
+                                <div class="prob-bar">
+                                    <div class="prob-fill prob-fill-0" id="p0-fill"></div>
+                                </div>
+                                <div class="prob-value" id="p0-value">50%</div>
+                            </div>
+                            <div class="prob-row">
+                                <div class="prob-label">P(1)</div>
+                                <div class="prob-bar">
+                                    <div class="prob-fill prob-fill-1" id="p1-fill"></div>
+                                </div>
+                                <div class="prob-value" id="p1-value">50%</div>
+                            </div>
+                        </div>
+
+                        <div class="state-readout">
+                            <div class="state-item state-item-stack">
+                                <span class="state-label">Bloch (x,y,z)</span>
+                                <span class="state-formula">(x,y,z) = (sinθ·cosφ, sinθ·sinφ, cosθ)</span>
+                                <span class="state-value" id="bloch-xyz">(0.00, 0.00, 1.00)</span>
+                            </div>
+                            <div class="state-item state-item-stack">
+                                <span class="state-label">|ψ⟩</span>
+                                <span class="state-formula">|ψ⟩ = cos(θ/2)|0⟩ + e^{iφ}·sin(θ/2)|1⟩</span>
+                                <span class="state-value" id="ket-display">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+	
+                <!-- 控制面板 -->
+                <div class="control-panel">
+                    <h3 class="control-title">单量子比特：布洛赫球与量子门</h3>
+
+                    <div class="theta-phi-row">
+                        <div class="control-group compact">
+                            <div class="control-label">
+                                <span>θ（从 |0⟩ 往下）</span>
+                                <span class="control-value" id="theta-value">60°</span>
+                            </div>
+                            <input type="range" id="theta-slider" min="0" max="180" value="60" step="1">
+                        </div>
+
+                        <div class="control-group compact">
+                            <div class="control-label">
+                                <span>φ（绕 Z 轴）</span>
+                                <span class="control-value" id="phi-value">0°</span>
+                            </div>
+                            <input type="range" id="phi-slider" min="0" max="360" value="0" step="1">
+                        </div>
+                    </div>
+                    <div class="control-hint theta-phi-hint">
+                        <span class="hint-muted">提示：θ 改变 P(0)/P(1)；φ 改变相位（Z 基测量概率不变）。</span>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>常用初态</span>
+                        </div>
+                        <div class="preset-buttons" style="margin-top: var(--spacing-2);">
+                            <button class="preset-btn" data-preset="zero">|0⟩</button>
+                            <button class="preset-btn" data-preset="one">|1⟩</button>
+                            <button class="preset-btn" data-preset="plus">|+⟩</button>
+                            <button class="preset-btn" data-preset="minus">|−⟩</button>
+                            <button class="preset-btn" data-preset="iplus">|i+⟩</button>
+                            <button class="preset-btn" data-preset="iminus">|i−⟩</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>常见量子门（点击应用）</span>
+                        </div>
+                        <div class="gate-grid" style="margin-top: var(--spacing-2);">
+                            <button class="preset-btn" data-gate="I">I</button>
+                            <button class="preset-btn" data-gate="X">X</button>
+                            <button class="preset-btn" data-gate="Y">Y</button>
+                            <button class="preset-btn" data-gate="Z">Z</button>
+                            <button class="preset-btn" data-gate="H">H</button>
+                            <button class="preset-btn" data-gate="S">S</button>
+                            <button class="preset-btn" data-gate="T">T</button>
+                        </div>
+                        <div class="control-hint">
+                            <span class="hint-muted">这些门会把布洛赫球上的箭头“旋转”到新位置。</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>旋转门角度</span>
+                            <span class="control-value" id="rot-value">90°</span>
+                        </div>
+                        <input type="range" id="rot-slider" min="-180" max="180" value="90" step="1">
+                        <div class="gate-grid gate-grid-3" style="margin-top: var(--spacing-2);">
+                            <button class="preset-btn" data-gate="Rx">Rx</button>
+                            <button class="preset-btn" data-gate="Ry">Ry</button>
+                            <button class="preset-btn" data-gate="Rz">Rz</button>
+                        </div>
+                    </div>
+
+                    <div class="control-buttons" style="margin-top: var(--spacing-4);">
+                        <button class="control-btn" id="undo-btn">撤销一步</button>
+                        <button class="control-btn primary" id="reset-btn">重置</button>
+                    </div>
+
+                    <div class="explanation-box">
+                        💡 玩法：先选一个初态（或直接拖动球面上的箭头）→ 连点不同量子门 → 观察测量概率如何变化。
+                    </div>
+                </div>
+	
+            </div>
+
+            <!-- 文档面板 -->
+            <div class="doc-panel">
+                <div class="doc-header">
+                    <h2 class="doc-title">📖 学习内容</h2>
+                    <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                </div>
+                <div class="doc-content" id="doc-content"></div>
+            </div>
+        </div>
+
+        <!-- 页面导航 -->
+        <div class="page-nav">
+            <a href="quantum-entanglement.html" class="page-nav-link prev">
+                <span class="page-nav-arrow">←</span>
+                <div>
+                    <div class="page-nav-label">上一节</div>
+                    <div class="page-nav-title">量子纠缠</div>
+                </div>
+            </a>
+            <a href="../../../index.html" class="page-nav-link next">
+                <div>
+                    <div class="page-nav-label">返回</div>
+                    <div class="page-nav-title">课程主页</div>
+                </div>
+                <span class="page-nav-arrow">→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/modern-era/quantum-computing-bloch.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('quantum-computing', document.getElementById('doc-content'));
+        });
+    </script>
+
+		    <style>
+		        .bloch-split {
+		            --bloch-panel-h: clamp(280px, 48vh, 560px);
+		            display: grid;
+		            grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+		            gap: var(--spacing-4);
+		            align-items: stretch;
+		        }
+
+		        .bloch-canvas-card {
+		            position: relative;
+		            height: var(--bloch-panel-h);
+		            background: var(--color-bg-card);
+		            border: 1px solid var(--color-border);
+		            border-radius: var(--radius-xl);
+		            overflow: hidden;
+		        }
+
+		        .bloch-info-card {
+		            height: var(--bloch-panel-h);
+		            background: var(--color-bg-card);
+		            border: 1px solid var(--color-border);
+		            border-radius: var(--radius-xl);
+		            padding: var(--spacing-4);
+		            overflow: hidden;
+		        }
+
+		        .canvas-hint {
+		            position: absolute;
+		            left: var(--spacing-3);
+		            bottom: var(--spacing-3);
+		            padding: 6px 10px;
+		            background: rgba(0, 0, 0, 0.45);
+		            border: 1px solid rgba(255, 255, 255, 0.10);
+		            border-radius: 999px;
+		            font-size: var(--text-xs);
+		            color: rgba(255, 255, 255, 0.70);
+		            backdrop-filter: blur(10px);
+		            pointer-events: none;
+		        }
+
+		        #bloch-canvas {
+		            touch-action: none;
+		            cursor: grab;
+		        }
+
+		        #bloch-canvas:active {
+		            cursor: grabbing;
+		        }
+
+	        .hud-header {
+	            display: flex;
+	            align-items: baseline;
+	            justify-content: space-between;
+	            gap: var(--spacing-2);
+	            margin-bottom: var(--spacing-3);
+	        }
+
+	        .hud-title {
+	            font-size: var(--text-sm);
+	            font-weight: 700;
+	            color: rgba(255, 255, 255, 0.85);
+	        }
+
+		        .hud-sub {
+		            font-family: var(--font-mono);
+		            font-size: var(--text-xs);
+		            color: rgba(34, 211, 238, 0.95);
+		            white-space: nowrap;
+		        }
+
+		        .theta-phi-row {
+		            display: grid;
+		            grid-template-columns: repeat(2, minmax(0, 1fr));
+		            gap: var(--spacing-4);
+		        }
+
+		        .control-group.compact {
+		            margin-bottom: 0;
+		        }
+
+		        .theta-phi-hint {
+		            margin-top: calc(var(--spacing-5) * -0.5);
+		            margin-bottom: var(--spacing-5);
+		        }
+
+	        .gate-grid {
+	            display: grid;
+	            grid-template-columns: repeat(4, minmax(0, 1fr));
+	            gap: var(--spacing-2);
+	        }
+
+	        .gate-grid-3 {
+	            grid-template-columns: repeat(3, minmax(0, 1fr));
+	        }
+
+	        .gate-grid .preset-btn {
+	            width: 100%;
+	            text-align: center;
+	            padding: var(--spacing-2) var(--spacing-2);
+	        }
+
+	        .explanation-box {
+	            margin-top: var(--spacing-4);
+	            padding: var(--spacing-3);
+	            background: rgba(34, 197, 94, 0.10);
+	            border: 1px solid rgba(34, 197, 94, 0.20);
+	            border-radius: var(--radius-lg);
+	            font-size: var(--text-sm);
+	            color: rgba(209, 250, 229, 0.95);
+	            line-height: 1.7;
+	        }
+
+	        .prob-panel {
+	            display: flex;
+	            flex-direction: column;
+	            gap: var(--spacing-3);
+	        }
+
+	        .prob-row {
+	            display: grid;
+	            grid-template-columns: 64px 1fr 64px;
+	            gap: var(--spacing-3);
+	            align-items: center;
+	        }
+
+	        .prob-label {
+	            font-family: var(--font-mono);
+	            font-size: var(--text-sm);
+	            color: rgba(255, 255, 255, 0.75);
+	        }
+
+	        .prob-bar {
+	            height: 12px;
+	            background: rgba(255, 255, 255, 0.08);
+	            border: 1px solid rgba(255, 255, 255, 0.10);
+	            border-radius: 999px;
+	            overflow: hidden;
+	        }
+
+	        .prob-fill {
+	            height: 100%;
+	            width: 50%;
+	            border-radius: 999px;
+	            transition: width var(--transition-fast);
+	        }
+
+	        .prob-fill-0 {
+	            background: rgba(34, 211, 238, 0.85);
+	        }
+
+	        .prob-fill-1 {
+	            background: rgba(244, 114, 182, 0.85);
+	        }
+
+	        .prob-value {
+	            font-family: var(--font-mono);
+	            font-size: var(--text-sm);
+	            color: rgba(255, 255, 255, 0.85);
+	            text-align: right;
+	        }
+
+	        .state-readout {
+	            margin-top: var(--spacing-3);
+	            padding-top: var(--spacing-3);
+	            border-top: 1px solid rgba(255, 255, 255, 0.12);
+	            display: flex;
+	            flex-direction: column;
+	            gap: var(--spacing-2);
+	        }
+
+		        .state-item {
+		            display: flex;
+		            justify-content: space-between;
+		            gap: var(--spacing-3);
+		            align-items: baseline;
+		        }
+
+		        .state-item-stack {
+		            flex-direction: column;
+		            align-items: stretch;
+		            justify-content: flex-start;
+		            gap: 6px;
+		        }
+
+		        .state-formula {
+		            font-family: var(--font-mono);
+		            font-size: var(--text-xs);
+		            color: rgba(255, 255, 255, 0.55);
+		            line-height: 1.45;
+		            word-break: break-word;
+		        }
+
+		        .state-item-stack .state-value {
+		            text-align: left;
+		        }
+
+	        .state-label {
+	            font-size: var(--text-xs);
+	            color: rgba(255, 255, 255, 0.55);
+	        }
+
+	        .state-value {
+	            font-family: var(--font-mono);
+	            font-size: var(--text-sm);
+	            color: rgba(255, 255, 255, 0.85);
+	            text-align: right;
+	            word-break: break-word;
+	        }
+
+		        @media (max-width: 768px) {
+		            .bloch-split {
+		                grid-template-columns: 1fr;
+		            }
+
+		            .bloch-canvas-card {
+		                height: clamp(260px, 46vh, 520px);
+		            }
+
+		            .bloch-info-card {
+		                height: auto;
+		            }
+
+		            .theta-phi-row {
+		                grid-template-columns: 1fr;
+		            }
+
+		            .gate-grid {
+		                grid-template-columns: repeat(3, minmax(0, 1fr));
+		            }
+
+	            .prob-row {
+	                grid-template-columns: 56px 1fr 56px;
+	            }
+	        }
+	    </style>
+</body>
+
+</html>

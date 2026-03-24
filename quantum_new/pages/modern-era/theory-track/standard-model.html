@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="标准模型 - 基本粒子与相互作用的统一理论">
+    <title>标准模型 | 量子探索之旅</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Marked.js & KaTeX -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/animations.css">
+    <link rel="stylesheet" href="../../../css/page.css">
+</head>
+
+<body>
+    <!-- 量子背景 -->
+    <canvas id="quantum-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="../../../index.html" class="nav-logo">
+                <span class="logo-icon">⚛</span>
+                <span class="logo-text">量子探索</span>
+            </a>
+
+            <div class="nav-page-title">
+                <span class="nav-page-icon">🔬</span>
+                <span class="nav-page-name">标准模型</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="admin-btn" id="admin-btn" title="管理员模式">
+                    <span class="admin-icon">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <main class="page-main">
+        <div class="page-container standard-model-layout">
+            <!-- 左侧：粒子表展示 -->
+            <div class="demo-panel particle-table-panel">
+                <h2 class="panel-title">基本粒子周期表</h2>
+
+                <!-- 粒子表格 -->
+                <div class="particle-table">
+                    <!-- 夸克区域 -->
+                    <div class="particle-section quarks-section">
+                        <div class="section-label">夸克 (Quarks)</div>
+                        <div class="particle-grid quarks-grid">
+                            <div class="particle-card quark" data-particle="up">
+                                <div class="particle-symbol">u</div>
+                                <div class="particle-name">上夸克</div>
+                                <div class="particle-mass">2.2 MeV</div>
+                                <div class="particle-charge">+2/3</div>
+                            </div>
+                            <div class="particle-card quark" data-particle="charm">
+                                <div class="particle-symbol">c</div>
+                                <div class="particle-name">粲夸克</div>
+                                <div class="particle-mass">1.27 GeV</div>
+                                <div class="particle-charge">+2/3</div>
+                            </div>
+                            <div class="particle-card quark" data-particle="top">
+                                <div class="particle-symbol">t</div>
+                                <div class="particle-name">顶夸克</div>
+                                <div class="particle-mass">173 GeV</div>
+                                <div class="particle-charge">+2/3</div>
+                            </div>
+                            <div class="particle-card quark" data-particle="down">
+                                <div class="particle-symbol">d</div>
+                                <div class="particle-name">下夸克</div>
+                                <div class="particle-mass">4.7 MeV</div>
+                                <div class="particle-charge">−1/3</div>
+                            </div>
+                            <div class="particle-card quark" data-particle="strange">
+                                <div class="particle-symbol">s</div>
+                                <div class="particle-name">奇夸克</div>
+                                <div class="particle-mass">95 MeV</div>
+                                <div class="particle-charge">−1/3</div>
+                            </div>
+                            <div class="particle-card quark" data-particle="bottom">
+                                <div class="particle-symbol">b</div>
+                                <div class="particle-name">底夸克</div>
+                                <div class="particle-mass">4.18 GeV</div>
+                                <div class="particle-charge">−1/3</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 轻子区域 -->
+                    <div class="particle-section leptons-section">
+                        <div class="section-label">轻子 (Leptons)</div>
+                        <div class="particle-grid leptons-grid">
+                            <div class="particle-card lepton" data-particle="electron">
+                                <div class="particle-symbol">e</div>
+                                <div class="particle-name">电子</div>
+                                <div class="particle-mass">0.511 MeV</div>
+                                <div class="particle-charge">−1</div>
+                            </div>
+                            <div class="particle-card lepton" data-particle="muon">
+                                <div class="particle-symbol">μ</div>
+                                <div class="particle-name">μ子</div>
+                                <div class="particle-mass">106 MeV</div>
+                                <div class="particle-charge">−1</div>
+                            </div>
+                            <div class="particle-card lepton" data-particle="tau">
+                                <div class="particle-symbol">τ</div>
+                                <div class="particle-name">τ子</div>
+                                <div class="particle-mass">1.78 GeV</div>
+                                <div class="particle-charge">−1</div>
+                            </div>
+                            <div class="particle-card lepton neutrino" data-particle="nu-e">
+                                <div class="particle-symbol">νₑ</div>
+                                <div class="particle-name">电子中微子</div>
+                                <div class="particle-mass">
+                                    < 2 eV</div>
+                                        <div class="particle-charge">0</div>
+                                </div>
+                                <div class="particle-card lepton neutrino" data-particle="nu-mu">
+                                    <div class="particle-symbol">νᵤ</div>
+                                    <div class="particle-name">μ中微子</div>
+                                    <div class="particle-mass">
+                                        < 0.19 MeV</div>
+                                            <div class="particle-charge">0</div>
+                                    </div>
+                                    <div class="particle-card lepton neutrino" data-particle="nu-tau">
+                                        <div class="particle-symbol">ν_τ</div>
+                                        <div class="particle-name">τ中微子</div>
+                                        <div class="particle-mass">
+                                            < 18 MeV</div>
+                                                <div class="particle-charge">0</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 规范玻色子区域 -->
+                                <div class="particle-section bosons-section">
+                                    <div class="section-label">规范玻色子 (Gauge Bosons)</div>
+                                    <div class="particle-grid bosons-grid">
+                                        <div class="particle-card boson photon" data-particle="photon">
+                                            <div class="particle-symbol">γ</div>
+                                            <div class="particle-name">光子</div>
+                                            <div class="particle-mass">0</div>
+                                            <div class="particle-force">电磁力</div>
+                                        </div>
+                                        <div class="particle-card boson gluon" data-particle="gluon">
+                                            <div class="particle-symbol">g</div>
+                                            <div class="particle-name">胶子</div>
+                                            <div class="particle-mass">0</div>
+                                            <div class="particle-force">强力</div>
+                                        </div>
+                                        <div class="particle-card boson weak" data-particle="z">
+                                            <div class="particle-symbol">Z</div>
+                                            <div class="particle-name">Z玻色子</div>
+                                            <div class="particle-mass">91.2 GeV</div>
+                                            <div class="particle-force">弱力</div>
+                                        </div>
+                                        <div class="particle-card boson weak" data-particle="w">
+                                            <div class="particle-symbol">W±</div>
+                                            <div class="particle-name">W玻色子</div>
+                                            <div class="particle-mass">80.4 GeV</div>
+                                            <div class="particle-force">弱力</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 希格斯玻色子 -->
+                                <div class="particle-section higgs-section">
+                                    <div class="section-label">标量玻色子</div>
+                                    <div class="particle-grid higgs-grid">
+                                        <div class="particle-card boson higgs" data-particle="higgs">
+                                            <div class="particle-symbol">H</div>
+                                            <div class="particle-name">希格斯玻色子</div>
+                                            <div class="particle-mass">125 GeV</div>
+                                            <div class="particle-force">质量起源</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 相互作用摘要 -->
+                            <div class="interactions-summary">
+                                <h3>四种基本相互作用</h3>
+                                <div class="interaction-cards">
+                                    <div class="interaction-card strong">
+                                        <span class="interaction-name">强相互作用</span>
+                                        <span class="interaction-carrier">胶子 g</span>
+                                    </div>
+                                    <div class="interaction-card em">
+                                        <span class="interaction-name">电磁相互作用</span>
+                                        <span class="interaction-carrier">光子 γ</span>
+                                    </div>
+                                    <div class="interaction-card weak">
+                                        <span class="interaction-name">弱相互作用</span>
+                                        <span class="interaction-carrier">W±, Z</span>
+                                    </div>
+                                    <div class="interaction-card gravity">
+                                        <span class="interaction-name">引力相互作用</span>
+                                        <span class="interaction-carrier">引力子?</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧：文档面板 -->
+                        <div class="doc-panel">
+                            <div class="doc-header">
+                                <h2 class="doc-title">📖 学习内容</h2>
+                                <button class="edit-btn" id="edit-btn">✏️ 编辑</button>
+                            </div>
+                            <div class="doc-content" id="doc-content"></div>
+
+                            <!-- 物理学家介绍 -->
+                            <div class="physicist-card">
+                                <img src="../../../assets/images/cn_yang.png" alt="杨振宁" class="physicist-image">
+                                <div class="physicist-info">
+                                    <h4>杨振宁</h4>
+                                    <p>C. N. Yang (1922-2025)</p>
+                                    <p class="physicist-desc">与米尔斯提出非阿贝尔规范场理论（杨-米尔斯理论），为标准模型的规范对称性结构提供了核心数学框架。</p>
+                                </div>
+                            </div>
+
+                            <div class="physicist-card">
+                                <img src="../../../assets/images/glashow_weinberg_salam_thooft.png" alt="格拉肖、温伯格、萨拉姆与't Hooft" class="physicist-image">
+                                <div class="physicist-info">
+                                    <h4>格拉肖、温伯格、萨拉姆与't Hooft</h4>
+                                    <p>Glashow, Weinberg, Salam & 't Hooft</p>
+                                    <p class="physicist-desc">提出并完善弱电统一理论，将电磁作用与弱相互作用统一到同一规范框架，并建立其可重整化形式。</p>
+                                </div>
+                            </div>
+
+                            <div class="physicist-card">
+                                <img src="../../../assets/images/gellmann_gross_wilczek.png" alt="盖尔曼、格罗斯与威尔切克" class="physicist-image">
+                                <div class="physicist-info">
+                                    <h4>盖尔曼、格罗斯与威尔切克</h4>
+                                    <p>Gell-Mann, Gross & Wilczek</p>
+                                    <p class="physicist-desc">通过夸克模型与量子色动力学（QCD）及渐近自由的建立，将强相互作用系统纳入标准模型理论体系。</p>
+                                </div>
+                            </div>
+
+                            <div class="physicist-card">
+                                <img src="../../../assets/images/higgs.png" alt="彼得·希格斯" class="physicist-image">
+                                <div class="physicist-info">
+                                    <h4>彼得·希格斯</h4>
+                                    <p>Peter Higgs (1929-2024)</p>
+                                    <p class="physicist-desc">英国物理学家，因预言希格斯玻色子获2013年诺贝尔物理学奖。希格斯机制解释了基本粒子如何获得质量。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 页面导航 -->
+                    <div class="page-nav">
+                        <a href="feynman-diagrams.html" class="page-nav-link prev">
+                            <span class="page-nav-arrow">←</span>
+                            <div>
+                                <div class="page-nav-label">上一节</div>
+                                <div class="page-nav-title">费曼图</div>
+                            </div>
+                        </a>
+                        <a href="../app-track/quantum-tunneling.html" class="page-nav-link next">
+                            <div>
+                                <div class="page-nav-label">下一阶段</div>
+                                <div class="page-nav-title">量子隧穿</div>
+                            </div>
+                            <span class="page-nav-arrow">→</span>
+                        </a>
+                    </div>
+    </main>
+
+    <!-- 管理员模态框 -->
+    <div class="modal" id="admin-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <h2 class="modal-title">管理员登录</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">密码</label>
+                    <input type="password" id="admin-password" placeholder="请输入管理员密码" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">登录</button>
+            </form>
+            <div class="admin-status" id="admin-status"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../../js/storage.js"></script>
+    <script src="../../../js/quantum-bg.js"></script>
+    <script src="../../../js/app.js"></script>
+    <script src="../../../js/nav-menu.js"></script>
+    <script src="../../../js/simulations/modern-era/standard-model.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPageContent('standard-model', document.getElementById('doc-content'));
+        });
+    </script>
+
+    <style>
+        /* 标准模型页面特殊布局 */
+        .standard-model-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: var(--spacing-6);
+        }
+
+        .particle-table-panel {
+            background: rgba(18, 18, 31, 0.8);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-5);
+        }
+
+        .panel-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-4);
+            text-align: center;
+        }
+
+        .particle-table {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-4);
+        }
+
+        .particle-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-3);
+        }
+
+        .section-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-2);
+            padding-left: var(--spacing-2);
+        }
+
+        .particle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-2);
+        }
+
+        .bosons-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .higgs-grid {
+            grid-template-columns: 1fr;
+            max-width: 150px;
+        }
+
+        .particle-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-2);
+            text-align: center;
+            transition: all var(--transition-fast);
+        }
+
+        .particle-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 夸克样式 */
+        .particle-card.quark {
+            border-color: rgba(239, 68, 68, 0.3);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), transparent);
+        }
+
+        .particle-card.quark:hover {
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        /* 轻子样式 */
+        .particle-card.lepton {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), transparent);
+        }
+
+        .particle-card.lepton:hover {
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+
+        .particle-card.neutrino {
+            border-color: rgba(147, 197, 253, 0.3);
+            background: linear-gradient(135deg, rgba(147, 197, 253, 0.1), transparent);
+        }
+
+        /* 玻色子样式 */
+        .particle-card.photon {
+            border-color: rgba(255, 220, 100, 0.3);
+            background: linear-gradient(135deg, rgba(255, 220, 100, 0.1), transparent);
+        }
+
+        .particle-card.gluon {
+            border-color: rgba(34, 197, 94, 0.3);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), transparent);
+        }
+
+        .particle-card.weak {
+            border-color: rgba(168, 85, 247, 0.3);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), transparent);
+        }
+
+        .particle-card.higgs {
+            border-color: rgba(236, 72, 153, 0.3);
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), transparent);
+        }
+
+        .particle-card.higgs:hover {
+            border-color: rgba(236, 72, 153, 0.6);
+        }
+
+        .particle-symbol {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .particle-name {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-1);
+        }
+
+        .particle-mass {
+            font-size: 10px;
+            color: var(--color-text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .particle-charge,
+        .particle-force {
+            font-size: 10px;
+            color: var(--color-quantum-purple);
+            font-weight: 500;
+        }
+
+        /* 相互作用摘要 */
+        .interactions-summary {
+            margin-top: var(--spacing-4);
+            padding-top: var(--spacing-4);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .interactions-summary h3 {
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-3);
+            text-align: center;
+        }
+
+        .interaction-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-2);
+        }
+
+        .interaction-card {
+            padding: var(--spacing-2);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .interaction-card.strong {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .interaction-card.em {
+            background: rgba(255, 220, 100, 0.15);
+            border: 1px solid rgba(255, 220, 100, 0.3);
+        }
+
+        .interaction-card.weak {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .interaction-card.gravity {
+            background: rgba(100, 116, 139, 0.15);
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .interaction-name {
+            display: block;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .interaction-carrier {
+            display: block;
+            font-size: 10px;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+
+        /* 物理学家卡片 */
+        .physicist-card {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+            padding: var(--spacing-4);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: var(--radius-xl);
+        }
+
+        .physicist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--color-quantum-purple);
+        }
+
+        .physicist-info {
+            flex: 1;
+        }
+
+        .physicist-info h4 {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-1);
+            color: var(--color-text-primary);
+        }
+
+        .physicist-info p {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-1);
+        }
+
+        @media (max-width: 1024px) {
+            .standard-model-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .interaction-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .particle-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bosons-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .physicist-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <!-- Ocean Gradient: Deep, rich blue with a lighter "sunlit" area -->
+    <radialGradient id="oceanGrad" cx="30%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#4F97E8" />
+      <stop offset="50%" stop-color="#18569E" />
+      <stop offset="100%" stop-color="#091E42" />
+    </radialGradient>
+
+    <!-- Land Gradient: Lush green to darker terrain -->
+    <linearGradient id="landGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6BBF56" />
+      <stop offset="100%" stop-color="#3A7A2A" />
+    </linearGradient>
+
+    <!-- Cloud Filter/Gradient -->
+    <filter id="cloudBlur">
+      <feGaussianBlur stdDeviation="1.5" />
+    </filter>
+
+    <!-- Atmosphere Glow (Outer) -->
+    <radialGradient id="atmosGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="80%" stop-color="rgba(79, 151, 232, 0)" />
+      <stop offset="100%" stop-color="rgba(79, 151, 232, 0.4)" />
+    </radialGradient>
+    
+    <!-- Sphere Shadow (Inner) for 3D effect -->
+    <radialGradient id="sphereShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="85%" stop-color="rgba(0,0,0,0)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0.6)" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base Sphere (Ocean) -->
+  <circle cx="100" cy="100" r="95" fill="url(#oceanGrad)" />
+
+  <!-- Continents (Stylized) -->
+  <g fill="url(#landGrad)" opacity="0.9">
+    <!-- North America-ish -->
+    <path d="M 50 60 Q 60 40 80 50 T 90 70 Q 80 90 60 80 T 50 60 Z" />
+    <!-- South America-ish -->
+    <path d="M 85 95 Q 100 90 105 105 T 95 140 Q 80 130 85 95 Z" />
+    <!-- Eurasia/Africa-ish -->
+    <path d="M 110 50 Q 140 40 160 60 T 150 100 Q 130 110 120 90 T 110 50 Z" />
+    <!-- Australia-ish -->
+    <path d="M 140 120 Q 160 115 165 130 Q 155 140 140 135 Z" />
+  </g>
+
+  <!-- Clouds (White, semi-transparent, diverse shapes) -->
+  <g fill="#FFFFFF" opacity="0.7" filter="url(#cloudBlur)">
+    <path d="M 40 50 Q 55 45 70 55 T 90 50 Q 75 65 60 60 T 40 50" opacity="0.8"/>
+    <path d="M 120 40 Q 135 30 150 45 T 160 40" opacity="0.6"/>
+    <path d="M 30 140 Q 50 130 70 145 T 100 135" opacity="0.5"/>
+    <path d="M 130 100 Q 150 90 170 105 T 160 120" opacity="0.7"/>
+    <!-- Swirling storm system -->
+    <path d="M 90 80 Q 100 70 110 80 A 10 10 0 0 1 100 90 A 8 8 0 0 1 95 85" opacity="0.8"/>
+  </g>
+
+  <!-- Inner Shadow for depth -->
+  <circle cx="100" cy="100" r="95" fill="url(#sphereShadow)" />
+
+  <!-- Specular Highlight (Sun reflection) -->
+  <ellipse cx="60" cy="60" rx="30" ry="20" fill="rgba(255,255,255,0.15)" transform="rotate(-45, 60, 60)" />
+
+  <!-- Outer Atmosphere Glow -->
+  <circle cx="100" cy="100" r="100" fill="url(#atmosGlow)" />
+</svg>
